@@ -3,7 +3,10 @@ package application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 
 public class Main extends Application {
@@ -16,8 +19,19 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			primaryStage.setTitle("Bienvenue à la médiathèque");
-			//test
-			//jin was here 2d
+			//Création des pane composant la page
+				// VBox globale du login
+				VBox vboxLogin = new VBox();
+				root.getChildren().add(vboxLogin);
+				// VBox Membres du personel
+				VBox vboxMembresPersonnel = new VBox();
+				//HBox Adhérants
+				HBox hboxAdherants = new HBox();
+				Button btnCatalogue = new Button("Catalogue");
+				Button btnMonDossier = new Button("Mon Dossier");
+				hboxAdherants.getChildren().addAll(btnCatalogue,btnMonDossier);
+				//Ajout des VBox dans celle du login
+			vboxLogin.getChildren().addAll(vboxMembresPersonnel,hboxAdherants);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
