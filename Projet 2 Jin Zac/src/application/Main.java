@@ -17,7 +17,7 @@ public class Main extends Application {
 			primaryStage.show();
 			primaryStage.setTitle("Bienvenue à la médiathèque");
 			//test
-			//jin was here 2
+			//jin was here 2d
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
