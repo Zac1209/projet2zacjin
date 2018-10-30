@@ -1,5 +1,10 @@
 package application;
 
+import java.io.IOException;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -16,7 +21,7 @@ public class Authentification {
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		primaryStage.setTitle("Bienvenue à la médiathèque");
+		primaryStage.setTitle("Login");
 		//Création des pane composant la page
 			// VBox globale du login
 			VBox vboxLogin = new VBox();
@@ -27,6 +32,14 @@ public class Authentification {
 			HBox hboxAdherants = new HBox();
 			hboxAdherants.setSpacing(20);
 			Button btnCatalogue = new Button("Catalogue");
+			btnCatalogue.setOnAction(new EventHandler<ActionEvent>() {
+			    public void handle(ActionEvent event) {
+			    	Mediatheque media = new Mediatheque();
+			    	Stage stage = new Stage();
+			    	media.start(stage);
+					primaryStage.close();
+			    }
+			});
 			
 			Button btnMonDossier = new Button("Mon Dossier");
 			hboxAdherants.getChildren().addAll(btnCatalogue,btnMonDossier);
