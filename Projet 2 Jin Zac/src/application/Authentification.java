@@ -59,6 +59,11 @@ public class Authentification {
 				public void handle(ActionEvent arg0) {
 					NomAfficher = !NomAfficher;
 					hboxPrenom.setVisible(NomAfficher);
+					if(NomAfficher == false) {
+						lblNomEtTelephone.setText("Téléphone: ");
+					}else {
+						lblNomEtTelephone.setText("Nom: ");
+					}
 				}
 			});
 			hboxNomEtTelephone.getChildren().addAll(lblNomEtTelephone,tfNomEtTelephone);
