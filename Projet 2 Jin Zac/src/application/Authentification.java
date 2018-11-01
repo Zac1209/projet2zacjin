@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,33 +14,46 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class Authentification {
 	boolean NomAfficher = true;
+
 	public void start(Stage primaryStage) {
-	try {
-		VBox root = new VBox();
-		Scene scene = new Scene(root,400,400);
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		primaryStage.setScene(scene);
-		primaryStage.show();
-		primaryStage.setTitle("Login");
-		//Création des pane composant la page
+		try {
+			VBox root = new VBox();
+			Scene scene = new Scene(root, 600, 400);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			primaryStage.setTitle("Login");
+			primaryStage.setResizable(false);
+			root.setPadding(new Insets(10, 10, 10, 10));
+			// Création des pane composant la page
 			// VBox globale du login
 			VBox vboxLogin = new VBox();
+			vboxLogin.setSpacing(10);
 			root.getChildren().add(vboxLogin);
-			
+
 			// VBox Membres du personel
 			VBox vboxMembresPersonnel = new VBox();
+			vboxMembresPersonnel.setBorder(new Border(
+					new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+			vboxMembresPersonnel.setPadding(new Insets(10, 10, 10, 10));
 			HBox hboxIdEmployer = new HBox();
 			hboxIdEmployer.setAlignment(Pos.CENTER);
 			Label lblIdEmployer = new Label("No. Employé : ");
@@ -49,25 +63,20 @@ public class Authentification {
 			Label lblPasswordEmployer = new Label("Mot de passe: ");
 			PasswordField pfPasswordEmployer = new PasswordField();
 			Button btnConnexionEmployer = new Button("Connexion");
-			hboxIdEmployer.getChildren().addAll(lblIdEmployer,tfIdEmployer);
-			hboxMDPEmployer.getChildren().addAll(lblPasswordEmployer,pfPasswordEmployer);
-			vboxMembresPersonnel.getChildren().addAll(hboxIdEmployer,hboxMDPEmployer,btnConnexionEmployer);
-			
-			//VBox Adhérants
+			hboxIdEmployer.getChildren().addAll(lblIdEmployer, tfIdEmployer);
+			hboxMDPEmployer.getChildren().addAll(lblPasswordEmployer, pfPasswordEmployer);
+			vboxMembresPersonnel.getChildren().addAll(hboxIdEmployer, hboxMDPEmployer, btnConnexionEmployer);
+
+			// VBox Adhérants
 			VBox vboxAdherants = new VBox();
+			vboxAdherants.setBorder(new Border(
+					new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+			vboxAdherants.setPadding(new Insets(10, 10, 10, 10));
 			GridPane gpAdherants = new GridPane();
 			Label lblNomEtTelephone = new Label("Nom: ");
 			TextField tfNomEtTelephone = new TextField();
 			Label lblPrenom = new Label("Prénom: ");
 			TextField tfPrenom = new TextField();
-			gpAdherants.setAlignment(Pos.CENTER);
-			ColumnConstraints col1 = new ColumnConstraints();
-			col1.setMinWidth(65);
-			gpAdherants.getColumnConstraints().add(col1);
-				//Régler l'alignement des labels à droite
-			GridPane.setHalignment(lblNomEtTelephone, HPos.RIGHT);
-			GridPane.setHalignment(lblPrenom, HPos.RIGHT);
-			
 			Button btnChangerAuTelephoneOuNom = new Button("Changer le mode de connexion pour le téléphone");
 			btnChangerAuTelephoneOuNom.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
@@ -75,35 +84,51 @@ public class Authentification {
 					NomAfficher = !NomAfficher;
 					lblPrenom.setVisible(NomAfficher);
 					tfPrenom.setVisible(NomAfficher);
-					if(NomAfficher == false) {
+					if (NomAfficher == false) {
 						lblNomEtTelephone.setText("Téléphone: ");
-					}else {
+					} else {
 						lblNomEtTelephone.setText("Nom: ");
 					}
 				}
 			});
-			
-			Button btnCatalogue = new Button("Temporaire");
-			btnCatalogue.setOnAction(new EventHandler<ActionEvent>() {
-			    public void handle(ActionEvent event) {
-			    	Mediatheque media = new Mediatheque();
-			    	Stage stage = new Stage();
-			    	media.start(stage);
+
+			// Définir les propriété d'alignement de la gridpane adhérants
+			GridPane.setHalignment(lblNomEtTelephone, HPos.RIGHT);
+			GridPane.setHalignment(lblPrenom, HPos.RIGHT);
+			gpAdherants.setVgap(7);
+			gpAdherants.setHgap(7);
+			gpAdherants.setAlignment(Pos.CENTER);
+			ColumnConstraints col1 = new ColumnConstraints();
+			col1.setMinWidth(65);
+			ColumnConstraints col2 = new ColumnConstraints();
+			col2.setMaxWidth(150);
+			gpAdherants.getColumnConstraints().addAll(col1,col2);
+			btnChangerAuTelephoneOuNom.wrapTextProperty().setValue(true);
+			btnChangerAuTelephoneOuNom.textAlignmentProperty().set(TextAlignment.CENTER);
+
+			Button btnConnexionAdherants = new Button("Connexion Adhérants");
+			btnConnexionAdherants.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent event) {
+					Mediatheque media = new Mediatheque();
+					Stage stage = new Stage();
+					media.start(stage);
 					primaryStage.close();
-			    }
+				}
 			});
-			
-			//Ajout des VBox dans celle du login
-			vboxLogin.getChildren().addAll(vboxMembresPersonnel,vboxAdherants,btnCatalogue);
-			
-			//Placement des éléments de la GridPane du login adhérants
-			vboxAdherants.getChildren().addAll(gpAdherants,btnChangerAuTelephoneOuNom);
+
+			// Ajout des VBox dans celle du login
+			vboxLogin.getChildren().addAll(vboxMembresPersonnel, vboxAdherants);
+
+			// Placement des éléments de la GridPane du login adhérants
+			vboxAdherants.getChildren().addAll(gpAdherants);
 			gpAdherants.add(lblNomEtTelephone, 0, 0);
 			gpAdherants.add(tfNomEtTelephone, 1, 0);
 			gpAdherants.add(lblPrenom, 0, 1);
 			gpAdherants.add(tfPrenom, 1, 1);
-	} catch(Exception e) {
-		e.printStackTrace();
+			gpAdherants.add(btnChangerAuTelephoneOuNom, 1, 2,1,1);
+			gpAdherants.add(btnConnexionAdherants, 1, 3,1,1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-}
 }
