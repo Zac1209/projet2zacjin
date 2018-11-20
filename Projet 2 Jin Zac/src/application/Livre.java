@@ -1,12 +1,14 @@
 package application;
 
+import java.util.Date;
+
 public class Livre extends Document{
 	
 	int pages; //testing data not part of actual structure
 	
-	public Livre(String titre, String auteur, int p){
+	public Livre(String titre, String auteur, Date dp , int p){
 		
-		super(titre, auteur);
+		super(titre, auteur, dp);
 		pages = p;
 		
 		
