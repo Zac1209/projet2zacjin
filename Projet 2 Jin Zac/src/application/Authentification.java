@@ -35,7 +35,7 @@ import javafx.stage.Stage;
 public class Authentification {
 	boolean NomAfficher = true;
 	boolean booUtilisationTelephoneConnexion = false;
-	boolean booConnexionViaMembrePersonnel;
+	static boolean booConnexionViaMembrePersonnel; //Savoir si on se connecte via un membre du personnel ou adhérant
 	static String strPrenom;
 	static String strNom;
 	static String strTelephone;
