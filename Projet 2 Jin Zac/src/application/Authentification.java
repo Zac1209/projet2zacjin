@@ -35,9 +35,12 @@ import javafx.stage.Stage;
 public class Authentification {
 	boolean NomAfficher = true;
 	boolean booUtilisationTelephoneConnexion = false;
+	boolean booConnexionViaMembrePersonnel;
 	static String strPrenom;
 	static String strNom;
 	static String strTelephone;
+	static String strNoEmploye;
+	static String strMotDePasse;
 
 	public void start(Stage primaryStage) {
 		try {
@@ -46,7 +49,7 @@ public class Authentification {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			primaryStage.setTitle("Login");
+			primaryStage.setTitle("Bienvenue à la médiathèque");
 			primaryStage.setResizable(false);
 			root.setPadding(new Insets(10, 10, 10, 10));
 			// Création des pane composant la page
@@ -64,14 +67,34 @@ public class Authentification {
 			Label lblPasswordEmployer = new Label("Mot de passe: ");
 			PasswordField pfPasswordEmployer = new PasswordField();
 			Button btnConnexionEmployer = new Button("Connexion");
-			
+
 			vboxMembresPersonnel.setBorder(new Border(
 					new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 			vboxMembresPersonnel.setPadding(new Insets(10, 10, 10, 10));
 			hboxIdEmployer.setAlignment(Pos.CENTER);
 			hboxMDPEmployer.setAlignment(Pos.CENTER);
 			btnConnexionEmployer.setAlignment(Pos.CENTER);
-			
+			vboxMembresPersonnel.setAlignment(Pos.CENTER);
+			vboxMembresPersonnel.setSpacing(7);
+
+			btnConnexionEmployer.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					booConnexionViaMembrePersonnel = true;
+					strNoEmploye = tfIdEmployer.getText();
+					strMotDePasse = pfPasswordEmployer.getText();
+					if(strNoEmploye.trim().equals("") || strMotDePasse.trim().equals("")) {
+						Alerte("Veuillez entrer un numéro d'employé ET un mot de passe valide", "Erreur");
+					}else {
+						Mediatheque media = new Mediatheque();
+						Stage stage = new Stage();
+						media.start(stage);
+						primaryStage.close();
+					}
+				}
+
+			});
+
 			hboxIdEmployer.getChildren().addAll(lblIdEmployer, tfIdEmployer);
 			hboxMDPEmployer.getChildren().addAll(lblPasswordEmployer, pfPasswordEmployer);
 			vboxMembresPersonnel.getChildren().addAll(hboxIdEmployer, hboxMDPEmployer, btnConnexionEmployer);
@@ -85,11 +108,11 @@ public class Authentification {
 			TextField tfPrenom = new TextField();
 			Button btnChangerAuTelephoneOuNom = new Button("Changer le mode de connexion pour le téléphone");
 			Button btnConnexionAdherants = new Button("Connexion Adhérants");
-			
+
 			vboxAdherants.setBorder(new Border(
 					new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 			vboxAdherants.setPadding(new Insets(10, 10, 10, 10));
-			
+
 			btnChangerAuTelephoneOuNom.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {
@@ -120,6 +143,7 @@ public class Authentification {
 			btnChangerAuTelephoneOuNom.textAlignmentProperty().set(TextAlignment.CENTER);
 			btnConnexionAdherants.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
+					booConnexionViaMembrePersonnel = false;
 					boolean booOk = true;
 					if (booUtilisationTelephoneConnexion == true) {
 						strTelephone = tfNomEtTelephone.getText();
