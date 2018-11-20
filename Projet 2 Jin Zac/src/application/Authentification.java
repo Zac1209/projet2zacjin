@@ -9,6 +9,8 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
@@ -32,6 +34,10 @@ import javafx.stage.Stage;
 
 public class Authentification {
 	boolean NomAfficher = true;
+	boolean booUtilisationTelephoneConnexion = false;
+	static String strPrenom;
+	static String strNom;
+	static String strTelephone;
 
 	public void start(Stage primaryStage) {
 		try {
@@ -51,36 +57,43 @@ public class Authentification {
 
 			// VBox Membres du personel
 			VBox vboxMembresPersonnel = new VBox();
-			vboxMembresPersonnel.setBorder(new Border(
-					new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-			vboxMembresPersonnel.setPadding(new Insets(10, 10, 10, 10));
 			HBox hboxIdEmployer = new HBox();
-			hboxIdEmployer.setAlignment(Pos.CENTER);
 			Label lblIdEmployer = new Label("No. Employé : ");
 			TextField tfIdEmployer = new TextField();
 			HBox hboxMDPEmployer = new HBox();
-			hboxMDPEmployer.setAlignment(Pos.CENTER);
 			Label lblPasswordEmployer = new Label("Mot de passe: ");
 			PasswordField pfPasswordEmployer = new PasswordField();
 			Button btnConnexionEmployer = new Button("Connexion");
+			
+			vboxMembresPersonnel.setBorder(new Border(
+					new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+			vboxMembresPersonnel.setPadding(new Insets(10, 10, 10, 10));
+			hboxIdEmployer.setAlignment(Pos.CENTER);
+			hboxMDPEmployer.setAlignment(Pos.CENTER);
+			btnConnexionEmployer.setAlignment(Pos.CENTER);
+			
 			hboxIdEmployer.getChildren().addAll(lblIdEmployer, tfIdEmployer);
 			hboxMDPEmployer.getChildren().addAll(lblPasswordEmployer, pfPasswordEmployer);
 			vboxMembresPersonnel.getChildren().addAll(hboxIdEmployer, hboxMDPEmployer, btnConnexionEmployer);
 
 			// VBox Adhérants
 			VBox vboxAdherants = new VBox();
-			vboxAdherants.setBorder(new Border(
-					new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-			vboxAdherants.setPadding(new Insets(10, 10, 10, 10));
 			GridPane gpAdherants = new GridPane();
 			Label lblNomEtTelephone = new Label("Nom: ");
 			TextField tfNomEtTelephone = new TextField();
 			Label lblPrenom = new Label("Prénom: ");
 			TextField tfPrenom = new TextField();
 			Button btnChangerAuTelephoneOuNom = new Button("Changer le mode de connexion pour le téléphone");
+			Button btnConnexionAdherants = new Button("Connexion Adhérants");
+			
+			vboxAdherants.setBorder(new Border(
+					new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+			vboxAdherants.setPadding(new Insets(10, 10, 10, 10));
+			
 			btnChangerAuTelephoneOuNom.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {
+					booUtilisationTelephoneConnexion = !booUtilisationTelephoneConnexion;
 					NomAfficher = !NomAfficher;
 					lblPrenom.setVisible(NomAfficher);
 					tfPrenom.setVisible(NomAfficher);
@@ -102,17 +115,33 @@ public class Authentification {
 			col1.setMinWidth(65);
 			ColumnConstraints col2 = new ColumnConstraints();
 			col2.setMaxWidth(150);
-			gpAdherants.getColumnConstraints().addAll(col1,col2);
+			gpAdherants.getColumnConstraints().addAll(col1, col2);
 			btnChangerAuTelephoneOuNom.wrapTextProperty().setValue(true);
 			btnChangerAuTelephoneOuNom.textAlignmentProperty().set(TextAlignment.CENTER);
-
-			Button btnConnexionAdherants = new Button("Connexion Adhérants");
 			btnConnexionAdherants.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent event) {
-					Mediatheque media = new Mediatheque();
-					Stage stage = new Stage();
-					media.start(stage);
-					primaryStage.close();
+					boolean booOk = true;
+					if (booUtilisationTelephoneConnexion == true) {
+						strTelephone = tfNomEtTelephone.getText();
+						if (strTelephone.trim().equals("")) {
+							booOk = false;
+							Alerte("Veuillez entrer un numéro de téléphone", "Erreur");
+						}
+					} else {
+						strPrenom = tfPrenom.getText();
+						strNom = tfNomEtTelephone.getText();
+						if (strPrenom.trim().equals("") || strNom.trim().equals("")) {
+							booOk = false;
+							Alerte("Veuillez entrer un nom ET prénom", "Erreur");
+						}
+					}
+					if (booOk == true) {
+						Mediatheque media = new Mediatheque();
+						Stage stage = new Stage();
+						media.start(stage);
+						primaryStage.close();
+					}
+
 				}
 			});
 
@@ -125,10 +154,18 @@ public class Authentification {
 			gpAdherants.add(tfNomEtTelephone, 1, 0);
 			gpAdherants.add(lblPrenom, 0, 1);
 			gpAdherants.add(tfPrenom, 1, 1);
-			gpAdherants.add(btnChangerAuTelephoneOuNom, 1, 2,1,1);
-			gpAdherants.add(btnConnexionAdherants, 1, 3,1,1);
+			gpAdherants.add(btnChangerAuTelephoneOuNom, 1, 2, 1, 1);
+			gpAdherants.add(btnConnexionAdherants, 1, 3, 1, 1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void Alerte(String strMessage, String strTitre) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle(strTitre);
+		alert.setHeaderText(null);
+		alert.setContentText(strMessage);
+		alert.showAndWait();
 	}
 }
