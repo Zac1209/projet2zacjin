@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class Livre extends Document{
 	
-	int pages; //testing data not part of actual structure
+	String pages; //testing data not part of actual structure
 	
-	public Livre(String titre, String auteur, Date dp , int p){
+	public Livre(String titre, String auteur, String dp , String p){
 		
 		super(titre, auteur, dp);
 		pages = p;

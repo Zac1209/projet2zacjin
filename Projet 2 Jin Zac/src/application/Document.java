@@ -7,14 +7,14 @@ public abstract class Document {
 	String titre;
 	String auteur;
 	Boolean dispo;
-	Date datePub;
+	String datePub;
 	
 	Date dateEmprunt;
 	String nomEmp;
 	String prenomEmp;
 	String numTel;
 	
-	public Document(String titre, String auteur, Date dp){
+	public Document(String titre, String auteur, String dp){
 		this.titre = titre;
 		this.auteur = auteur;
 		datePub = dp;
