@@ -95,7 +95,7 @@ public class Mediatheque extends Application {// Remove extends application post
 			 
 			 
 			 
-			// ------------------------------- LIVRE --------------------------------- @here
+			// +++++++++++++++++++++++++++++++++++ LIVRE ++++++++++++++++++++++++++++++++++++++ @here
 
 			// THE TABLE
 			TableView<Livre> tabLivre = new TableView<Livre>();
@@ -145,7 +145,7 @@ public class Mediatheque extends Application {// Remove extends application post
 			colAuteurP.setPrefWidth(120);
 
 			tabP.getColumns().addAll(colNumP, colTitreP, colAuteurP);
-			tab3.setContent(tabLivre);
+			tab3.setContent(tabP);
 
 			// THE OLIST
 			ObservableList<Periodique> listP = FXCollections.observableArrayList();

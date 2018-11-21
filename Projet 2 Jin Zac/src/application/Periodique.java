@@ -1,5 +1,5 @@
 package application;
 
-public class Periodique {
+public class Periodique extends Document{
 
 }
