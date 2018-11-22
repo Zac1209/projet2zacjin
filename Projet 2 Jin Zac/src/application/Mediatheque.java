@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -21,6 +22,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
@@ -41,6 +46,7 @@ public class Mediatheque extends Application {// Remove extends application post
 	public void start(Stage primaryStage) {
 		try {
 			
+			//ListeDocument listeDeToutLesDocs = new ListeDocument(); 
 
 			// +++++++++++++++++++++++++++++ FILE READING +++++++++++++++++++++++++++++++
 
@@ -212,31 +218,49 @@ public class Mediatheque extends Application {// Remove extends application post
 				rightSide.setAlignment(Pos.TOP_CENTER);
 				
 				VBox recherche = new VBox();
-				rightSide.getChildren().add(recherche);
+				
+				Label lblR = new Label("recherche");
+				TextField tfR = new TextField();
+				
+				EventHandler<KeyEvent> gestionClavier = new EventHandler<KeyEvent>(){
+					@Override
+					public void handle(KeyEvent e) {
+						// TODO Auto-generated method stub
+					
+					}
+				};
+				
+				tfR.setOnKeyTyped(gestionClavier);
+				tfR.setPrefSize(200, 30);
+				
+				recherche.getChildren().addAll(lblR,tfR);
+				
 				
 				Button btnAjoutDoc = new Button("Ajouter un Document");
 				btnAjoutDoc.setPrefSize(200, 40);
-				rightSide.setMargin(btnAjoutDoc, new Insets(10));
+				VBox.setMargin(btnAjoutDoc, new Insets(10));	//VBOX. vs rightSide. ?????????
 				
 				Button btnSuprDoc = new Button("Supprimer un document");
 				btnSuprDoc.setPrefSize(200, 40);
-				rightSide.setMargin(btnSuprDoc, new Insets(10));
+				VBox.setMargin(btnSuprDoc, new Insets(10));
 				
 				Button btnGererUsers = new Button("gerer les adherants");
 				btnGererUsers.setPrefSize(200, 40);
-				rightSide.setMargin(btnGererUsers, new Insets(10));
+				VBox.setMargin(btnGererUsers, new Insets(10));
 				
 				Button btnPret = new Button("Inscrire un pret");
 				btnPret.setPrefSize(200, 40);
-				rightSide.setMargin(btnPret, new Insets(10));
+				VBox.setMargin(btnPret, new Insets(10));
 				
 				Button btnRetour = new Button("Inscrire un retour");
 				btnRetour.setPrefSize(200, 40);
-				rightSide.setMargin(btnRetour, new Insets(10));
+				VBox.setMargin(btnRetour, new Insets(10));
 				
 				
 				root.getChildren().add(rightSide);
 				rightSide.getChildren().addAll(recherche,btnAjoutDoc, btnSuprDoc, btnGererUsers, btnPret,btnRetour);
+				
+				
 				
 			}
 			else//adherant
