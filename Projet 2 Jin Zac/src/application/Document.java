@@ -92,9 +92,6 @@ public class Document {
 		return numTel;
 	}
 
-	public void setNumTel(String numTel) {
-		this.numTel = numTel;
-	}
 	
 	
 }

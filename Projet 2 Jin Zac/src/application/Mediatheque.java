@@ -5,6 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
@@ -13,16 +15,25 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.shape.StrokeType;
 import javafx.stage.Stage;
 
 public class Mediatheque extends Application {// Remove extends application post testing
 
 	public void start(Stage primaryStage) {
 		try {
+			
 
 			// +++++++++++++++++++++++++++++ FILE READING +++++++++++++++++++++++++++++++
 
@@ -30,6 +41,8 @@ public class Mediatheque extends Application {// Remove extends application post
 			HBox root = new HBox();
 			primaryStage.setTitle("Médiathèque");
 			primaryStage.setScene(new Scene(root, 900, 600));
+			
+			
 
 			// +++++++++++++++++ TABPANE POUR AFFICHER LES INFORMATIONS +++++++++++++++++
 
@@ -37,6 +50,7 @@ public class Mediatheque extends Application {// Remove extends application post
 			TabPane tabPane = new TabPane();
 			tabPane.setPrefWidth(600);
 			tabPane.setMaxWidth(600);
+			tabPane.setPadding(new Insets(20));
 
 			Tab tab1 = new Tab();
 			tab1.setText("Documents");
@@ -55,6 +69,12 @@ public class Mediatheque extends Application {// Remove extends application post
 			tab4.setClosable(false);
 
 			tabPane.getTabs().addAll(tab1, tab2, tab3, tab4);
+			
+		
+			
+			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			// +++++++++++++++++++++++++++ CATALOGUE ++++++++++++++++++++++++++++++++
+			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 			// +++++++++++++++++++++++++++ DOCUMENTS ++++++++++++++++++++++++++++++++
 
@@ -81,18 +101,19 @@ public class Mediatheque extends Application {// Remove extends application post
 			tab1.setContent(tabDoc);
 
 			// THE OLIST
-			ObservableList<Document> listDoc = FXCollections.observableArrayList(new Document("titre x", "par auteur", "2010-10-10"));
+			ObservableList<Document> listDoc = FXCollections.observableArrayList();
 
 			colTitre.setCellValueFactory(new PropertyValueFactory<>("titre"));
 			colAuteur.setCellValueFactory(new PropertyValueFactory<>("auteur"));
 			
 			tabDoc.setItems(listDoc);
+			
+			//for each document in list document add to listdoc
 
 			// ---------------------- TEMPORARY TESTING DATA ---------------------------
 
-			// Document test = new Document("titre x", "par auteur", "2010-10-10");
-			 //listDoc.add(test);
-			// System.out.println(test);
+			 Livre test = new Livre("titre x", "par auteur", "2010-10-10", "22");
+			 listDoc.add(test);
 			 
 			 
 			 
@@ -123,7 +144,9 @@ public class Mediatheque extends Application {// Remove extends application post
 			colAuteurLivre.setCellValueFactory(new PropertyValueFactory<>("auteur"));
 			
 			tabLivre.setItems(listLivre);
-
+			
+			//for each document in list document if the document iterated instance of Livre add to listlivre Repeat for perio et dvd
+			//if(Livre.class.instance.isInstance(objet))
 
 			
 			// +++++++++++++++++++++++++++++++++ PERIODIQUE ++++++++++++++++++++++++++++++++++++++++++
@@ -156,6 +179,28 @@ public class Mediatheque extends Application {// Remove extends application post
 
 
 			root.getChildren().add(tabPane);
+			
+			// +++++++++++++++++++++++++++++ OPTIONS A DROITE ++++++++++++++++++++++++++++++++++++++
+			
+			if(true/*Authentification.getBooConnexionViaMembrePersonnel()*/)
+			{
+				VBox rightSide = new VBox();
+				rightSide.setPrefSize(200, 600);
+				rightSide.setPadding(new Insets(20));
+				rightSide.setAlignment(Pos.TOP_CENTER);
+				VBox recherche = new VBox();
+				Button btnAjoutDoc = new Button("Ajouter un Document");
+			
+				
+				
+				root.getChildren().add(rightSide);
+				rightSide.getChildren().addAll(recherche,btnAjoutDoc);
+				
+			}
+			else//adherant
+			{
+				//for each doc in liste doc add doc to tab only if the name of borrower = name of current logged member
+			}
 
 			primaryStage.show();
 
