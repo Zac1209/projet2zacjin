@@ -33,14 +33,14 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class Authentification {
-	boolean NomAfficher = true;
-	boolean booUtilisationTelephoneConnexion = false;
-	static boolean booConnexionViaMembrePersonnel; //Savoir si on se connecte via un membre du personnel ou adhérant
-	static String strPrenom;
-	static String strNom;
-	static String strTelephone;
-	static String strNoEmploye;
-	static String strMotDePasse;
+	private boolean NomAfficher = true;
+	private boolean booUtilisationTelephoneConnexion = false;
+	private static boolean booConnexionViaMembrePersonnel; //Savoir si on se connecte via un membre du personnel ou adhérant
+	private static String strPrenom;
+	private static String strNom;
+	private static String strTelephone;
+	private static String strNoEmploye;
+	private static String strMotDePasse;
 
 	public void start(Stage primaryStage) {
 		try {
@@ -191,5 +191,25 @@ public class Authentification {
 		alert.setHeaderText(null);
 		alert.setContentText(strMessage);
 		alert.showAndWait();
+	}
+
+	public static boolean getBooConnexionViaMembrePersonnel() {
+		return booConnexionViaMembrePersonnel;
+	}
+
+	public static String getStrPrenom() {
+		return strPrenom;
+	}
+
+	public static String getStrNom() {
+		return strNom;
+	}
+
+	public static String getStrTelephone() {
+		return strTelephone;
+	}
+
+	public static String getStrNoEmploye() {
+		return strNoEmploye;
 	}
 }
