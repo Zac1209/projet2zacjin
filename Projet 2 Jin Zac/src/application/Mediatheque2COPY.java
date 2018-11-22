@@ -36,7 +36,7 @@ import javafx.scene.shape.StrokeType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class Mediatheque extends Application {// Remove extends application post testing
+public class Mediatheque2COPY extends Application {// Remove extends application post testing
 
 	public void start(Stage primaryStage) {
 		try {
