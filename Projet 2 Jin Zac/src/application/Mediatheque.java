@@ -77,11 +77,11 @@ public class Mediatheque extends Application {// Remove extends application post
 			coldispo.setPrefWidth(120);
 			coldispo.setPrefWidth(120);
 
-			tabDoc.getColumns().addAll(colNum, colTitre, colAuteur, coldispo);
+			tabDoc.getColumns().addAll(colTitre, colAuteur);
 			tab1.setContent(tabDoc);
 
 			// THE OLIST
-			ObservableList<Document> listDoc = FXCollections.observableArrayList();
+			ObservableList<Document> listDoc = FXCollections.observableArrayList(new Document("titre x", "par auteur", "2010-10-10"));
 
 			colTitre.setCellValueFactory(new PropertyValueFactory<>("titre"));
 			colAuteur.setCellValueFactory(new PropertyValueFactory<>("auteur"));
@@ -90,8 +90,9 @@ public class Mediatheque extends Application {// Remove extends application post
 
 			// ---------------------- TEMPORARY TESTING DATA ---------------------------
 
-			 Document test = new Livre("titre x", "par auteur", "2010-10-10", "22");
-			 listDoc.add(test);
+			// Document test = new Document("titre x", "par auteur", "2010-10-10");
+			 //listDoc.add(test);
+			// System.out.println(test);
 			 
 			 
 			 
