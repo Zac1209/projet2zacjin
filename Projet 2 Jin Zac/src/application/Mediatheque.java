@@ -1,5 +1,8 @@
 package application;
 
+import java.awt.Event;
+import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,12 +11,15 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
@@ -28,6 +34,7 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Mediatheque extends Application {// Remove extends application post testing
 
@@ -41,7 +48,22 @@ public class Mediatheque extends Application {// Remove extends application post
 			HBox root = new HBox();
 			primaryStage.setTitle("Médiathèque");
 			primaryStage.setScene(new Scene(root, 900, 600));
-			
+			primaryStage.setOnCloseRequest((WindowEvent event1) -> {
+				
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.getButtonTypes().set(0, new ButtonType("Oui"));
+				alert.getButtonTypes().set(1, new ButtonType("Non"));
+				alert.setTitle("Quitter");
+				alert.setHeaderText(null);
+				alert.setContentText("Voulez-vous quitter le programme et sauvegarder?");
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get().getText().equals("Oui")){										//FAIRE LA SERIALISATION - ZAC
+				    // Fermer le programme
+				} else {
+				    // ne pas fermer
+					event1.consume();
+				}
+		    });
 			
 
 			// +++++++++++++++++ TABPANE POUR AFFICHER LES INFORMATIONS +++++++++++++++++
@@ -212,5 +234,6 @@ public class Mediatheque extends Application {// Remove extends application post
 	public static void main(String[] args) {// remove main post testing
 		launch(args);
 	}
+	
 
 }
