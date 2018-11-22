@@ -63,8 +63,10 @@ public class Mediatheque extends Application {// Remove extends application post
 				alert.setHeaderText(null);
 				alert.setContentText("Voulez-vous quitter le programme et sauvegarder?");
 				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get().getText().equals("Oui")){										//FAIRE LA SERIALISATION - ZAC
+				if (result.get().getText().equals("Oui")){
 				    // Fermer le programme
+					ListeDocument.serializer();
+					ListeMembre.serializer();
 				} else {
 				    // ne pas fermer
 					event1.consume();

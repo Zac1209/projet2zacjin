@@ -2,17 +2,19 @@ package application;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class listeDocument {
-	private static listeDocument instance;
+public class ListeDocument {
+	private static ListeDocument instance;
 	static public ArrayList<Document> arListeDoc = new ArrayList<Document>();
 
-	private listeDocument() throws IOException {
+	private ListeDocument() throws IOException {
 		boolean fin = false;
 
 		FileInputStream fichier = new FileInputStream("document.ser");
@@ -40,9 +42,9 @@ public class listeDocument {
 		}
 	}
 
-	public static listeDocument getInstance() throws IOException {
+	public static ListeDocument getInstance() throws IOException {
 		if (instance == null)
-			instance = new listeDocument();
+			instance = new ListeDocument();
 		return instance;
 	}
 
@@ -96,6 +98,28 @@ public class listeDocument {
 				ex.printStackTrace();
 
 			}
+
+		}
+	}
+
+	static public void serializer() {
+		try {
+
+			FileOutputStream fichier = new FileOutputStream("document.ser");
+
+			ObjectOutputStream os = new ObjectOutputStream(fichier);
+
+			for (Document doc : arListeDoc) {
+				os.writeObject(doc);
+			}
+
+			os.close();
+
+		}
+
+		catch (IOException e) {
+
+			e.printStackTrace();
 
 		}
 	}
