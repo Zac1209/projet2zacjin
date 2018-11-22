@@ -4,20 +4,20 @@ import java.util.Date;
 
 public class Document {
 	
-	private String titre;
-	private String auteur;
-	private Boolean dispo;
-	private String datePub;
+	private String strTitre;
+	private String strAuteur;
+	private Boolean booDispo;
+	private String strDatePublication;
 	
 	private Date dateEmprunt;
-	private String nomEmp;
-	private String prenomEmp;
-	private String numTel;
+	private String srtNomEmprunteur;
+	private String strPrenomEmprunteur;
+	private String strNumeroTelephone;
 	
-	public Document(String titre, String auteur, String dp){
-		this.titre = titre;
-		this.auteur = auteur;
-		datePub = dp;
+	public Document(String titre, String auteur, String datePublication){
+		this.strTitre = titre;
+		this.strAuteur = auteur;
+		datePublication = datePublication;
 	}
 
 	public String Emprunt(Date emprunt, String nom, int numTel ) {
@@ -29,39 +29,39 @@ public class Document {
 
 	@Override
 	public String toString() {
-		return "Document [titre=" + titre + ", auteur=" + auteur + "]";
+		return "Document [titre=" + strTitre + ", auteur=" + strAuteur + "]";
 	}
 
 	public String getTitre() {
-		return titre;
+		return strTitre;
 	}
 
 	public void setTitre(String titre) {
-		this.titre = titre;
+		this.strTitre = titre;
 	}
 
 	public String getAuteur() {
-		return auteur;
+		return strAuteur;
 	}
 
 	public void setAuteur(String auteur) {
-		this.auteur = auteur;
+		this.strAuteur = auteur;
 	}
 
 	public Boolean getDispo() {
-		return dispo;
+		return booDispo;
 	}
 
 	public void setDispo(Boolean dispo) {
-		this.dispo = dispo;
+		this.booDispo = dispo;
 	}
 
-	public String getDatePub() {
-		return datePub;
+	public String getDatePublication() {
+		return strDatePublication;
 	}
 
 	public void setDatePub(String datePub) {
-		this.datePub = datePub;
+		this.strDatePublication = datePub;
 	}
 
 	public Date getDateEmprunt() {
@@ -73,23 +73,27 @@ public class Document {
 	}
 
 	public String getNomEmp() {
-		return nomEmp;
+		return srtNomEmprunteur;
 	}
 
 	public void setNomEmp(String nomEmp) {
-		this.nomEmp = nomEmp;
+		this.srtNomEmprunteur = nomEmp;
 	}
 
 	public String getPrenomEmp() {
-		return prenomEmp;
+		return strPrenomEmprunteur;
 	}
 
 	public void setPrenomEmp(String prenomEmp) {
-		this.prenomEmp = prenomEmp;
+		this.strPrenomEmprunteur = prenomEmp;
 	}
 
 	public String getNumTel() {
-		return numTel;
+		return strNumeroTelephone;
+	}
+
+	public void setNumTel(String numTel) {
+		this.strNumeroTelephone = numTel;
 	}
 
 	

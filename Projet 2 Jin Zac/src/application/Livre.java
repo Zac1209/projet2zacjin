@@ -3,20 +3,15 @@ package application;
 import java.util.Date;
 
 public class Livre extends Document{
+	private String strNumeroLivre;
 	
-	String pages; //testing data not part of actual structure
-	
-	public Livre(String titre, String auteur, String dp , String p){
-		
+	public Livre(String NumLivre, String titre, String dp ,String auteur){	
 		super(titre, auteur, dp);
-		pages = p;
-		
-		
+		this.strNumeroLivre = NumLivre;
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public String getStrNumeroLivre() {
+		return strNumeroLivre;
 	}
 
 }
