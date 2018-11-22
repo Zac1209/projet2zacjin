@@ -28,8 +28,13 @@ public class listeDocument {
 
 		} catch (IOException e) {
 			// lecture des données si première fois que le programme est lancé
+			System.out.println("Première lecture du programme");
 				// Lecture des dvd
-			lireFichierDvd("DVD.txt");
+			lireFichier("DVD.txt","dvd");
+				// Lecture des livres
+			lireFichier("Livres.txt","livre");
+				// Lectures des périodiques
+			lireFichier("Periodiques.txt","periodique");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -41,10 +46,9 @@ public class listeDocument {
 		return instance;
 	}
 
-	private void lireFichierDvd(String strNomFichier) {
+	private void lireFichier(String strNomFichier, String strType) {
 		BufferedReader br = null;
 		FileReader fr = null;
-		ArrayList<Document> arrayDocuments = new ArrayList<Document>();
 		try {
 
 			fr = new FileReader(strNomFichier);
@@ -53,9 +57,24 @@ public class listeDocument {
 			String strLigne;
 			while ((strLigne = br.readLine()) != null) {
 				StringTokenizer stLigne = new StringTokenizer(strLigne, ",");
-				arrayDocuments
-						.add(new DVD(stLigne.nextToken().trim(), stLigne.nextToken().trim(), stLigne.nextToken().trim(),
-								Integer.parseInt(stLigne.nextToken().trim()), stLigne.nextToken().trim()));
+				switch (strType) {
+				case "dvd":
+					arListeDoc.add(
+							new DVD(stLigne.nextToken().trim(), stLigne.nextToken().trim(), stLigne.nextToken().trim(),
+									Integer.parseInt(stLigne.nextToken().trim()), stLigne.nextToken().trim()));
+					break;
+				case "livre":
+					arListeDoc.add(new Livre(stLigne.nextToken().trim(), stLigne.nextToken().trim(),
+							stLigne.nextToken().trim(), stLigne.nextToken().trim()));
+					break;
+				case "periodique":
+					arListeDoc.add(new Periodique(stLigne.nextToken().trim(), stLigne.nextToken().trim(),
+							stLigne.nextToken().trim(), stLigne.nextToken().trim(),
+							Integer.parseInt(stLigne.nextToken().trim()),
+							Integer.parseInt(stLigne.nextToken().trim())));
+					break;
+				}
+				
 			}
 
 		} catch (IOException e) {
@@ -80,4 +99,5 @@ public class listeDocument {
 
 		}
 	}
+	
 }
