@@ -18,4 +18,24 @@ public class Membre {
 		}
 		this.booEstPrepose = estPrepose;
 	}
+
+	public String getStrNom() {
+		return strNom;
+	}
+
+	public String getStrPrenom() {
+		return strPrenom;
+	}
+
+	public String getStrNumTel() {
+		return strNumTel;
+	}
+
+	public String getStrIdPrep() {
+		return strIdPrep;
+	}
+
+	public boolean isBooEstPrepose() {
+		return booEstPrepose;
+	}
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class ListeMembre {
 	static public ArrayList<Membre> arListeMembre = new ArrayList<Membre>();
+
 	private ListeMembre() throws IOException {
 		boolean fin = false;
 
