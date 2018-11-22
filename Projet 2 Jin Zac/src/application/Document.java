@@ -17,7 +17,7 @@ public class Document {
 	public Document(String titre, String auteur, String datePublication){
 		this.strTitre = titre;
 		this.strAuteur = auteur;
-		datePublication = datePublication;
+		strDatePublication = datePublication;
 	}
 
 	public String Emprunt(Date emprunt, String nom, int numTel ) {
