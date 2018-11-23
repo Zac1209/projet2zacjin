@@ -44,7 +44,7 @@ public class ListeMembre {
 	static public void serializer() {
 		try {
 
-			FileOutputStream fichier = new FileOutputStream("membre.ser");
+			FileOutputStream fichier = new FileOutputStream("document.ser");
 
 			ObjectOutputStream os = new ObjectOutputStream(fichier);
 
@@ -53,7 +53,7 @@ public class ListeMembre {
 			}
 
 			os.close();
-			System.out.println("Membres sauvegardés");
+
 		}
 
 		catch (IOException e) {
