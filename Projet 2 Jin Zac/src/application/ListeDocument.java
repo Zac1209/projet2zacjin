@@ -21,17 +21,19 @@ public class ListeDocument {
 
 		try {
 			FileInputStream fichier = new FileInputStream("document.ser");
-
 			ObjectInputStream is = new ObjectInputStream(fichier);
 			Document doc;
-
-			while ((doc = (Document) is.readObject()) != null) {
-				arListeDoc.add(doc);
+			try {
+				while ((doc = (Document) is.readObject()) != null) {
+					arListeDoc.add(doc);
+				}
+			}catch (IOException e) {
 			}
-
+			
+			System.out.println("3");
 		} catch (IOException e) {
 			// lecture des données si première fois que le programme est lancé
-			System.out.println("Première lecture du programme");
+			System.out.println("Première lecture du programme!");
 				// Lecture des dvd
 			lireFichier("DVD.txt","dvd");
 				// Lecture des livres

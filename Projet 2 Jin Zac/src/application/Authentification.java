@@ -86,37 +86,30 @@ public class Authentification {
 					strNoEmploye = tfIdEmployer.getText();
 					int compteur = 0;
 					strMotDePasse = pfPasswordEmployer.getText();	
-					
 					if(strNoEmploye.trim().equals("") || strMotDePasse.trim().equals("")) {
 						Alerte("Veuillez entrer un numéro d'employé ET un mot de passe valide", "Erreur");
 					}
-					
 					else {
-						for(; compteur < ListeMembre.arListeMembre.size() && strNoEmploye.compareTo(ListeMembre.arListeMembre.get(compteur).getStrIdPrep()) != 0; compteur++)
-						{
-							if(strNoEmploye.compareTo(ListeMembre.arListeMembre.get(compteur).getStrIdPrep()) == 0)
+						boolean booTrouve = false;
+						for(; compteur < ListeMembre.arListeMembre.size() && booTrouve != true; compteur++) {
+							if(strNoEmploye.equals(ListeMembre.arListeMembre.get(compteur).getStrIdPrep()))
 							{
-								Mediatheque media = new Mediatheque();
-								Stage stage = new Stage();
-								media.start(stage);
-								primaryStage.close();
-							}
-							if(compteur == ListeMembre.arListeMembre.size())
-							{
-								Alert alert = new Alert(AlertType.INFORMATION);
-								alert.getButtonTypes().set(0, new ButtonType("ok"));
-								alert.setTitle("Nop");
-								alert.setHeaderText("Erreur");
-								alert.setContentText("Ce numero n'existe pas");
+								booTrouve = true;
+								if(ListeMembre.arListeMembre.get(compteur).getStrMotDePasse().equals(strMotDePasse)) {
+									Mediatheque media = new Mediatheque();
+									Stage stage = new Stage();
+									media.start(stage);
+									primaryStage.close();
+								}
+								else {
+									Alerte("Mot de passe incorect","Erreur");
+								}
+								
 							}
 						
-							if(/*ListeMembre.arListeMembre.get(compteur).getMotdepasse().comparedTo(strMotDePasse) == 0*/1==1)a fix
-							{
-								Mediatheque media = new Mediatheque();
-								Stage stage = new Stage();
-								media.start(stage);
-								primaryStage.close();
-							}
+						}
+						if(booTrouve == false) {
+							Alerte("ID incorrect","Erreur");
 						}
 					}
 				}

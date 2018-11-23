@@ -1,19 +1,27 @@
 package application;
 
-public class Membre {
+import java.io.Serializable;
+
+public class Membre implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6813029036270644603L;
 	private String strNom;
 	private String strPrenom;
-	private String strNumTel;//seulement pour les adhérants
-	private String strIdPrep;//seulement pour les préposés
+	private String strNumTel = null;//seulement pour les adhérants
+	private String strIdPrep = null;//seulement pour les préposés
+	private String strMotDePasse = null;//seulement pour les préposés
 	private boolean booEstPrepose;
 	private int intDette;
 
-	public Membre(String nom, String prenom, String numTel, String idPrep, boolean estPrepose) {
+	public Membre(String nom, String prenom, String numTel, String idPrep, boolean estPrepose, String mdp) {
 		this.strNom = nom;
 		this.strPrenom = prenom;
 		if(estPrepose == true) {
 			this.strIdPrep = idPrep;
+			this.strMotDePasse = mdp;
 		}else {
 			this.strNumTel = numTel;
 		}
@@ -47,5 +55,11 @@ public class Membre {
 
 	public boolean isBooEstPrepose() {
 		return booEstPrepose;
+	}
+
+
+
+	public String getStrMotDePasse() {
+		return strMotDePasse;
 	}
 }

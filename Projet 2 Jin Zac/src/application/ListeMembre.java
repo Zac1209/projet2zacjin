@@ -44,7 +44,7 @@ public class ListeMembre {
 	static public void serializer() {
 		try {
 
-			FileOutputStream fichier = new FileOutputStream("document.ser");
+			FileOutputStream fichier = new FileOutputStream("membre.ser");
 
 			ObjectOutputStream os = new ObjectOutputStream(fichier);
 
