@@ -2,27 +2,22 @@ package application;
 
 public class Periodique extends Document {
 	private String strNumeroPeriodique;
-	private int intNumeroVolume;
-	private int intNumeroPeriodique;
+	private String strNumeroVolume;
 
-	public Periodique(String strNumeroPeriodique, String titre, String datePublication, String auteur,
-			int intNumeroVolume, int intNumeroPeriodique) {
-		super(titre, auteur, datePublication);
+	public Periodique(String strNumero, String titre, String datePublication, String auteur,
+			String strNumeroVolume, String strNumeroPeriodique) {
+		super(strNumeroPeriodique, titre, auteur, datePublication);
 		this.strNumeroPeriodique = strNumeroPeriodique;
-		this.intNumeroPeriodique = intNumeroPeriodique;
-		this.intNumeroVolume = intNumeroVolume;
+		this.strNumeroVolume = strNumeroVolume;
 	}
 
 	public String getStrNumeroPeriodique() {
 		return strNumeroPeriodique;
 	}
 
-	public int getIntNumeroVolume() {
-		return intNumeroVolume;
+	public String getStrNumeroVolume() {
+		return strNumeroVolume;
 	}
 
-	public int getIntNumeroPeriodique() {
-		return intNumeroPeriodique;
-	}
 
 }

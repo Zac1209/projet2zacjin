@@ -133,18 +133,14 @@ public class Mediatheque extends Application {// Remove extends application post
 			// THE OLIST
 			ObservableList<Document> listDoc = FXCollections.observableArrayList();
 
+			colNum.setCellValueFactory(new PropertyValueFactory<>("strNumero"));
 			colTitre.setCellValueFactory(new PropertyValueFactory<>("titre"));
 			colAuteur.setCellValueFactory(new PropertyValueFactory<>("auteur"));
+			coldispo.setCellValueFactory(new PropertyValueFactory<>("booDispo"));
 			
 			tabDoc.setItems(listDoc);
 			
 			//for each document in list document add to listdoc
-
-			// ---------------------- TEMPORARY TESTING DATA ---------------------------
-
-			 Livre test = new Livre("titre x", "par auteur", "2010-10-10", "22");
-			 listDoc.add(test);
-			 
 			 
 			 
 			// +++++++++++++++++++++++++++++++++++ LIVRE ++++++++++++++++++++++++++++++++++++++ @here

@@ -3,15 +3,15 @@ package application;
 import java.util.Date;
 
 public class Livre extends Document{
-	private String strNumeroLivre;
+	private String strPage;
 	
-	public Livre(String NumLivre, String titre, String dp ,String auteur){	
-		super(titre, auteur, dp);
-		this.strNumeroLivre = NumLivre;
+	public Livre(String NumLivre, String titre, String dp ,String auteur,String page){	
+		super(NumLivre ,titre, auteur, dp);
+		strPage = page;
 	}
 
 	public String getStrNumeroLivre() {
-		return strNumeroLivre;
+		return strPage;
 	}
 
 }
