@@ -1,5 +1,6 @@
 package application;
 
+import java.io.IOException;
 import java.util.Date;
 
 public class Periodique extends Document {
@@ -21,16 +22,39 @@ public class Periodique extends Document {
 		return strNumeroVolume;
 	}
 	
-	public String Emprunt(String nom, String prenom, int numTel ) {
+	public String Emprunt(String nom, String prenom, String numTel ) {
 		
 		if(dateEmprunt != null)
 		{
 			int dejaEmprunter = 0;
-			ListeDocument listeComplete = ListeDocument.getInstance();
+			ListeDocument listeComplete;
+			try {
+				listeComplete = ListeDocument.getInstance();
 			
-			for (int i = 0; i < listeComplete.arListeDoc.size(); i++) {
+			
+			for (int i = 0; i < listeComplete.arListeDoc.size() && dejaEmprunter < 1; i++) {
 				if (listeComplete.arListeDoc.get(i) instanceof Periodique)
+					dejaEmprunter++;
 					
+			}
+			
+			if(dejaEmprunter == 1)
+			{
+				return "Vous avez deja emprunter un periodique";
+			}
+			else
+			{
+				strNomEmprunteur = nom;
+				strPrenomEmprunteur = prenom;
+				strNumeroTelephone = numTel;
+				
+				return "Emprunt fait";
+			}
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "erreur";
 			}
 		}
 		return "Deja emprunte"; // erase this shit when done

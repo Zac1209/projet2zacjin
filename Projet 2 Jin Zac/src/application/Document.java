@@ -19,9 +19,9 @@ public class Document implements Serializable{
 	private String strDatePublication;
 	
 	protected Date dateEmprunt;
-	private String strNomEmprunteur;
-	private String strPrenomEmprunteur;
-	private String strNumeroTelephone;
+	protected String strNomEmprunteur;
+	protected String strPrenomEmprunteur;
+	protected String strNumeroTelephone;
 	
 	public Document(String num ,String titre, String auteur, String datePublication){
 		strNumero = num;

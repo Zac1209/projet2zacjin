@@ -286,7 +286,7 @@ public class Mediatheque extends Application {// Remove extends application post
 			
 			root.getChildren().add(rightSide);
 			
-			if (Authentification.getBooConnexionViaMembrePersonnel()) {
+			if (!Authentification.getBooConnexionViaMembrePersonnel()) {
 
 				Button btnAjoutDoc = new Button("Ajouter un Document");
 				btnAjoutDoc.setPrefSize(200, 40);
