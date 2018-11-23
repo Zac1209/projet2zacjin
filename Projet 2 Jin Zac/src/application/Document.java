@@ -1,12 +1,17 @@
 package application;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Document {
+public class Document implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -98033171071395781L;
 	private String strNumero;
 	private String strTitre;
 	private String strAuteur;

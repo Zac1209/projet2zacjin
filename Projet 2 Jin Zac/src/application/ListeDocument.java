@@ -8,7 +8,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.StringTokenizer;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 
 public class ListeDocument {
 	private static ListeDocument instance;
@@ -16,30 +21,33 @@ public class ListeDocument {
 
 	private ListeDocument() throws IOException {
 		boolean fin = false;
-
-		
-
+		ObjectInputStream is = null;
 		try {
 			FileInputStream fichier = new FileInputStream("document.ser");
-
-			ObjectInputStream is = new ObjectInputStream(fichier);
+			is = new ObjectInputStream(fichier);
 			Document doc;
 
-			while ((doc = (Document) is.readObject()) != null) {
-				arListeDoc.add(doc);
+			try {
+
+				while ((doc = (Document) is.readObject()) != null) {
+					arListeDoc.add(doc);
+				}
+			} catch (IOException e) {
 			}
 
-		} catch (IOException e) {
+			catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			System.out.println("premiere lecture");
 			// lecture des données si première fois que le programme est lancé
 			System.out.println("Première lecture du programme");
-				// Lecture des dvd
-			lireFichier("DVD.txt","dvd");
-				// Lecture des livres
-			lireFichier("Livres.txt","livre");
-				// Lectures des périodiques
-			lireFichier("Periodiques.txt","periodique");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			// Lecture des dvd
+			lireFichier("DVD.txt", "dvd");
+			// Lecture des livres
+			lireFichier("Livres.txt", "livre");
+			// Lectures des périodiques
+			lireFichier("Periodiques.txt", "periodique");
 		}
 	}
 
@@ -103,24 +111,20 @@ public class ListeDocument {
 
 	static public void serializer() {
 		try {
-
 			FileOutputStream fichier = new FileOutputStream("document.ser");
-
 			ObjectOutputStream os = new ObjectOutputStream(fichier);
 
 			for (Document doc : arListeDoc) {
 				os.writeObject(doc);
 			}
-
 			os.close();
-
+			System.out.println("Documents sauvegardés");
 		}
 
 		catch (IOException e) {
-
 			e.printStackTrace();
 
 		}
 	}
-	
+
 }

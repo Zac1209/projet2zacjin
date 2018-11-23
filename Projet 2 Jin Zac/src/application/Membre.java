@@ -1,7 +1,13 @@
 package application;
 
-public class Membre {
+import java.io.Serializable;
+
+public class Membre implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2864521152996478603L;
 	private String strNom;
 	private String strPrenom;
 	private String strNumTel;//seulement pour les adhérants
