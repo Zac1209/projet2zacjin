@@ -18,7 +18,6 @@ public class Document {
 	private String strNomEmprunteur;
 	private String strPrenomEmprunteur;
 	private String strNumeroTelephone;
-	private ArrayList<String> motsCles;
 	
 	public Document(String num ,String titre, String auteur, String datePublication){
 		strNumero = num;
