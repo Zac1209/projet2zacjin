@@ -71,12 +71,10 @@ public class ListeDocument {
 					break;
 				case "periodique":
 					arListeDoc.add(new Periodique(stLigne.nextToken().trim(), stLigne.nextToken().trim(),
-							stLigne.nextToken().trim(), stLigne.nextToken().trim(),
-							Integer.parseInt(stLigne.nextToken().trim()),
-							Integer.parseInt(stLigne.nextToken().trim())));
+							stLigne.nextToken().trim(), null, stLigne.nextToken().trim(), stLigne.nextToken().trim()));
 					break;
 				}
-				
+
 			}
 
 		} catch (IOException e) {

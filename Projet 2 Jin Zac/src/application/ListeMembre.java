@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class ListeMembre {
 	static public ArrayList<Membre> arListeMembre = new ArrayList<Membre>();
+	private static ListeMembre instance;
 
 	private ListeMembre() throws IOException {
 		boolean fin = false;
@@ -30,6 +31,16 @@ public class ListeMembre {
 			e.printStackTrace();
 		}
 	}
+
+	public static ListeMembre getInstance() {
+		if (instance == null)
+			try {
+				instance = new ListeMembre();
+			} catch (IOException e) {
+			}
+		return instance;
+	}
+
 	static public void serializer() {
 		try {
 
