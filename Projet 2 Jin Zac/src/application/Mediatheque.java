@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.Event;
+import java.util.Date;
 import java.util.Optional;
 
 import javafx.application.Application;
@@ -275,7 +276,7 @@ public class Mediatheque extends Application {// Remove extends application post
 			
 			root.getChildren().add(rightSide);
 			
-			if (!Authentification.getBooConnexionViaMembrePersonnel()) {
+			if (Authentification.getBooConnexionViaMembrePersonnel()) {
 
 				Button btnAjoutDoc = new Button("Ajouter un Document");
 				btnAjoutDoc.setPrefSize(200, 40);
@@ -320,6 +321,37 @@ public class Mediatheque extends Application {// Remove extends application post
 				btnConsulter.setPrefSize(200, 40);
 				VBox.setMargin(btnConsulter, new Insets(10));
 				rightSide.getChildren().add(btnConsulter);
+				
+				EventHandler<MouseEvent> click = new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent e) {
+						// TODO Auto-generated method stub
+						int docEmp = 0;
+						int dette = 0;
+						
+						for (int i = 0; i < listeComplete.arListeDoc.size(); i++) {
+							if(Authentification.getStrNom() == listeComplete.arListeDoc.get(i).getNomEmp() && Authentification.getStrPrenom() == listeComplete.arListeDoc.get(i).getPrenomEmp())
+							{
+								double frais = 0;
+								int gap;
+								docEmp++;
+								Date live = new Date();
+								gap = live.compareTo(listeComplete.arListeDoc.get(i).getDateEmprunt());
+								if(listeComplete.arListeDoc.get(i) instanceof Livre && gap > 14)
+									frais = (gap - 14)*0.5;
+								if(listeComplete.arListeDoc.get(i) instanceof Periodique && gap > 3)
+									frais = (gap - 3)*0.5;
+								if(listeComplete.arListeDoc.get(i) instanceof DVD && gap > 7)
+									frais = (gap - 7)*0.5;
+								//RENDU ICI pas encore afficher
+							}
+						}
+
+
+					}
+				};
+				
+				btnConsulter.setOnMouseClicked(click);
 			}
 
 			
