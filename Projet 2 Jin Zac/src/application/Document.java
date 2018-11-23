@@ -6,8 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Document {
+public class Document implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7664109942692871359L;
 	private String strNumero;
 	private String strTitre;
 	private String strAuteur;
