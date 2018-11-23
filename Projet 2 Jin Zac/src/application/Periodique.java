@@ -6,7 +6,7 @@ public class Periodique extends Document {
 
 	public Periodique(String strNumero, String titre, String datePublication, String auteur,
 			String strNumeroVolume, String strNumeroPeriodique) {
-		super(strNumeroPeriodique, titre, auteur, datePublication);
+		super(strNumero, titre, auteur, datePublication);
 		this.strNumeroPeriodique = strNumeroPeriodique;
 		this.strNumeroVolume = strNumeroVolume;
 	}

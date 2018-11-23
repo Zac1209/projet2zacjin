@@ -7,6 +7,7 @@ public class Membre {
 	private String strNumTel;//seulement pour les adhérants
 	private String strIdPrep;//seulement pour les préposés
 	private boolean booEstPrepose;
+	private int intDette;
 
 	public Membre(String nom, String prenom, String numTel, String idPrep, boolean estPrepose) {
 		this.strNom = nom;

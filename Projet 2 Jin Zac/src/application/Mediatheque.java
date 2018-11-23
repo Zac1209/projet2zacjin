@@ -26,6 +26,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
@@ -41,10 +42,9 @@ import javafx.scene.shape.StrokeType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class Mediatheque extends Application {// Remove extends application post testing
+public class Mediatheque extends Application {// Remove extends application post
+												// testing
 
-	
-	
 	public void start(Stage primaryStage) {
 		try {
 
@@ -57,7 +57,7 @@ public class Mediatheque extends Application {// Remove extends application post
 			primaryStage.setTitle("Médiathèque");
 			primaryStage.setScene(new Scene(root, 900, 600));
 			primaryStage.setOnCloseRequest((WindowEvent event1) -> {
-				
+
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.getButtonTypes().set(0, new ButtonType("Oui"));
 				alert.getButtonTypes().set(1, new ButtonType("Non"));
@@ -65,16 +65,15 @@ public class Mediatheque extends Application {// Remove extends application post
 				alert.setHeaderText(null);
 				alert.setContentText("Voulez-vous quitter le programme et sauvegarder?");
 				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get().getText().equals("Oui")){
-				    // Fermer le programme
+				if (result.get().getText().equals("Oui")) {
+					// Fermer le programme
 					ListeDocument.serializer();
 					ListeMembre.serializer();
 				} else {
-				    // ne pas fermer
+					// ne pas fermer
 					event1.consume();
 				}
-		    });
-			
+			});
 
 			// +++++++++++++++++ TABPANE POUR AFFICHER LES INFORMATIONS +++++++++++++++++
 
@@ -102,8 +101,8 @@ public class Mediatheque extends Application {// Remove extends application post
 
 			tabPane.getTabs().addAll(tab1, tab2, tab3, tab4);
 			
-		
-			
+			root.getChildren().add(tabPane);
+
 			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			// +++++++++++++++++++++++++++ CATALOGUE ++++++++++++++++++++++++++++++++
 			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -129,7 +128,7 @@ public class Mediatheque extends Application {// Remove extends application post
 			coldispo.setPrefWidth(120);
 			coldispo.setPrefWidth(120);
 
-			tabDoc.getColumns().addAll(colTitre, colAuteur);
+			tabDoc.getColumns().addAll(colNum, colTitre, colAuteur, coldispo);
 			tab1.setContent(tabDoc);
 
 			// THE OLIST
@@ -138,18 +137,16 @@ public class Mediatheque extends Application {// Remove extends application post
 			colNum.setCellValueFactory(new PropertyValueFactory<>("strNumero"));
 			colTitre.setCellValueFactory(new PropertyValueFactory<>("titre"));
 			colAuteur.setCellValueFactory(new PropertyValueFactory<>("auteur"));
-			coldispo.setCellValueFactory(new PropertyValueFactory<>("booDispo"));
-			
+			coldispo.setCellValueFactory(new PropertyValueFactory<>("strDispo"));
+
 			tabDoc.setItems(listDoc);
-			
-			//for each document in list document add to listdoc
-			for(int i = 0 ; i < listeComplete.arListeDoc.size();i++)
-			{
+
+			// for each document in list document add to listdoc
+			for (int i = 0; i < listeComplete.arListeDoc.size(); i++) {
 				listDoc.add(listeComplete.arListeDoc.get(i));
 			}
-			 
-			 
-			// +++++++++++++++++++++++++++++++++++ LIVRE ++++++++++++++++++++++++++++++++++++++ @here
+
+			// +++++++++++++++++++++++++++++++++++ LIVRE ++++++++++++++++++++++++++++++++++++++
 
 			// THE TABLE
 			TableView<Livre> tabLivre = new TableView<Livre>();
@@ -166,29 +163,25 @@ public class Mediatheque extends Application {// Remove extends application post
 			colAuteurLivre.setPrefWidth(120);
 			colAuteurLivre.setPrefWidth(120);
 
-			tabLivre.getColumns().addAll(colNumLivre,colTitreLivre, colAuteurLivre);
+			tabLivre.getColumns().addAll(colNumLivre, colTitreLivre, colAuteurLivre);
 			tab2.setContent(tabLivre);
 
 			// THE OLIST
 			ObservableList<Livre> listLivre = FXCollections.observableArrayList();
 
+
+			colNumLivre.setCellValueFactory(new PropertyValueFactory<>("strNumero"));	
 			colTitreLivre.setCellValueFactory(new PropertyValueFactory<>("titre"));
 			colAuteurLivre.setCellValueFactory(new PropertyValueFactory<>("auteur"));
-			
+
 			tabLivre.setItems(listLivre);
-			
-			//for each document in list document if the document iterated instance of Livre add to listlivre Repeat for perio et dvd
-			//if(Livre.class.instance.isInstance(objet))
-			for(int i = 0 ; i < listeComplete.arListeDoc.size();i++)
-			{
-				if(Livre.class.isInstance(listeComplete.arListeDoc.get(i)))
-				listDoc.add(listeComplete.arListeDoc.get(i));
+
+			for (int i = 0; i < listeComplete.arListeDoc.size(); i++) {
+				if (listeComplete.arListeDoc.get(i) instanceof Livre)
+					listLivre.add((Livre) listeComplete.arListeDoc.get(i));
 			}
 
-			
 			// +++++++++++++++++++++++++++++++++ PERIODIQUE ++++++++++++++++++++++++++++++++++++++++++
-			
-			// CHANGE THESE FOR CLASS PERIODIQUE
 
 			// THE TABLE
 			TableView<Periodique> tabP = new TableView<Periodique>();
@@ -201,7 +194,7 @@ public class Mediatheque extends Application {// Remove extends application post
 			colTitreP.setPrefWidth(120);
 			colTitreP.setMaxWidth(120);
 
-			TableColumn<Periodique, String> colAuteurP = new TableColumn<Periodique, String>("Auteur");
+			TableColumn<Periodique, String> colAuteurP = new TableColumn<Periodique, String>("Numero du periodique");
 			colAuteurP.setPrefWidth(120);
 			colAuteurP.setPrefWidth(120);
 
@@ -211,78 +204,125 @@ public class Mediatheque extends Application {// Remove extends application post
 			// THE OLIST
 			ObservableList<Periodique> listP = FXCollections.observableArrayList();
 
+			colNumP.setCellValueFactory(new PropertyValueFactory<>("strNumero"));
 			colTitreP.setCellValueFactory(new PropertyValueFactory<>("titre"));
-			colAuteurP.setCellValueFactory(new PropertyValueFactory<>("auteur"));
+			colAuteurP.setCellValueFactory(new PropertyValueFactory<>("strNumeroPeriodique"));
 
+			tabP.setItems(listP);
 
-			root.getChildren().add(tabPane);
-			
-			for(int i = 0 ; i < listeComplete.arListeDoc.size();i++)
-			{
-				if(Periodique.class.isInstance(listeComplete.arListeDoc.get(i)))
-				listDoc.add(listeComplete.arListeDoc.get(i));
+			for (int i = 0; i < listeComplete.arListeDoc.size(); i++) {
+				if (listeComplete.arListeDoc.get(i) instanceof Periodique)
+					listP.add((Periodique) listeComplete.arListeDoc.get(i));
 			}
-			
+
+			// +++++++++++++++++++++++++++++++++ DVD ++++++++++++++++++++++++++++++++++++++++++
+
+			// THE TABLE
+			TableView<DVD> tabD = new TableView<DVD>();
+
+			TableColumn<DVD, String> colNumD = new TableColumn<DVD, String>("Numéro Périodique");
+			colNumD.setPrefWidth(120);
+			colNumD.setMaxWidth(120);
+
+			TableColumn<DVD, String> colTitreD = new TableColumn<DVD, String>("Titre");
+			colTitreD.setPrefWidth(120);
+			colTitreD.setMaxWidth(120);
+
+			TableColumn<DVD, String> colAuteurD = new TableColumn<DVD, String>("Auteur");
+			colAuteurD.setPrefWidth(120);
+			colAuteurD.setPrefWidth(120);
+
+			tabD.getColumns().addAll(colNumD, colTitreD, colAuteurD);
+			tab4.setContent(tabD);
+
+			// THE OLIST
+			ObservableList<DVD> listD = FXCollections.observableArrayList();
+
+			colNumD.setCellValueFactory(new PropertyValueFactory<>("strNumero"));
+			colTitreD.setCellValueFactory(new PropertyValueFactory<>("titre"));
+			colAuteurD.setCellValueFactory(new PropertyValueFactory<>("auteur"));
+
+			tabD.setItems(listD);
+
+			for (int i = 0; i < listeComplete.arListeDoc.size(); i++) {
+				if (listeComplete.arListeDoc.get(i) instanceof DVD)
+					listD.add((DVD) listeComplete.arListeDoc.get(i));
+			}
+
 			// +++++++++++++++++++++++++++++ OPTIONS A DROITE ++++++++++++++++++++++++++++++++++++++
+
+			VBox rightSide = new VBox();
+			rightSide.setPrefSize(200, 600);
+			rightSide.setPadding(new Insets(20));
+			rightSide.setAlignment(Pos.TOP_CENTER);
+			VBox recherche = new VBox();
+			Label lblR = new Label("recherche");
+			TextField tfR = new TextField();
 			
-			if(true/*Authentification.getBooConnexionViaMembrePersonnel()*/)
-			{
-				VBox rightSide = new VBox();
-				rightSide.setPrefSize(200, 600);
-				rightSide.setPadding(new Insets(20));
-				rightSide.setAlignment(Pos.TOP_CENTER);
-				
-				VBox recherche = new VBox();
-				
-				Label lblR = new Label("recherche");
-				TextField tfR = new TextField();
-				
-				EventHandler<KeyEvent> gestionClavier = new EventHandler<KeyEvent>(){
-					@Override
-					public void handle(KeyEvent e) {
-						// TODO Auto-generated method stub
-					
-					}
-				};
-				
-				tfR.setOnKeyTyped(gestionClavier);
-				tfR.setPrefSize(200, 30);
-				
-				recherche.getChildren().addAll(lblR,tfR);
-				
-				
+			//RECHERCHER????? REMOVE IF NOT DONE
+			EventHandler<KeyEvent> gestionClavier = new EventHandler<KeyEvent>() {
+				@Override
+				public void handle(KeyEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+			};
+
+			tfR.setOnKeyTyped(gestionClavier);
+			tfR.setPrefSize(200, 30);
+
+			recherche.getChildren().addAll(lblR, tfR);
+			
+			root.getChildren().add(rightSide);
+			
+			if (!Authentification.getBooConnexionViaMembrePersonnel()) {
+
 				Button btnAjoutDoc = new Button("Ajouter un Document");
 				btnAjoutDoc.setPrefSize(200, 40);
-				VBox.setMargin(btnAjoutDoc, new Insets(10));	//VBOX. vs rightSide. ?????????
+				VBox.setMargin(btnAjoutDoc, new Insets(10));
+				
+				
+				EventHandler<MouseEvent> eventAjoutDoc = new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+
+					}
+				};
+
+				btnAjoutDoc.setOnMousePressed(eventAjoutDoc);
+				
 				
 				Button btnSuprDoc = new Button("Supprimer un document");
 				btnSuprDoc.setPrefSize(200, 40);
 				VBox.setMargin(btnSuprDoc, new Insets(10));
-				
+
 				Button btnGererUsers = new Button("gerer les adherants");
 				btnGererUsers.setPrefSize(200, 40);
 				VBox.setMargin(btnGererUsers, new Insets(10));
-				
+
 				Button btnPret = new Button("Inscrire un pret");
 				btnPret.setPrefSize(200, 40);
 				VBox.setMargin(btnPret, new Insets(10));
-				
+
 				Button btnRetour = new Button("Inscrire un retour");
 				btnRetour.setPrefSize(200, 40);
 				VBox.setMargin(btnRetour, new Insets(10));
+
 				
-				
-				root.getChildren().add(rightSide);
-				rightSide.getChildren().addAll(recherche,btnAjoutDoc, btnSuprDoc, btnGererUsers, btnPret,btnRetour);
-				
-				
-				
-			}
-			else//adherant
+				rightSide.getChildren().addAll(recherche, btnAjoutDoc, btnSuprDoc, btnGererUsers, btnPret, btnRetour);
+
+			}	
+			else// adherant
 			{
-				//for each doc in liste doc add doc to tab only if the name of borrower = name of current logged member
+				Button btnConsulter = new Button("Consulter son compte");
+				btnConsulter.setPrefSize(200, 40);
+				VBox.setMargin(btnConsulter, new Insets(10));
+				rightSide.getChildren().add(btnConsulter);
 			}
 
+			
 			primaryStage.show();
 
 		} catch (Exception e) {
@@ -293,6 +333,5 @@ public class Mediatheque extends Application {// Remove extends application post
 	public static void main(String[] args) {// remove main post testing
 		launch(args);
 	}
-	
 
 }

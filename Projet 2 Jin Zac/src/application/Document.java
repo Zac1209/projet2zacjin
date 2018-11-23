@@ -2,6 +2,7 @@ package application;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Document {
@@ -9,19 +10,22 @@ public class Document {
 	private String strNumero;
 	private String strTitre;
 	private String strAuteur;
-	private Boolean booDispo;
+	private String strDispo;
 	private String strDatePublication;
 	
 	private Date dateEmprunt;
 	private String strNomEmprunteur;
 	private String strPrenomEmprunteur;
 	private String strNumeroTelephone;
+	private ArrayList<String> motsCles;
 	
 	public Document(String num ,String titre, String auteur, String datePublication){
 		strNumero = num;
 		strTitre = titre;
 		strAuteur = auteur;
 		strDatePublication = datePublication;
+
+		strDispo = "oui";
 	}
 
 	public String Emprunt(String nom, String prenom, int numTel ) {
@@ -74,12 +78,12 @@ public class Document {
 		this.strAuteur = auteur;
 	}
 
-	public Boolean getDispo() {
-		return booDispo;
+	public String getDispo() {
+		return strDispo;
 	}
 
-	public void setDispo(Boolean dispo) {
-		this.booDispo = dispo;
+	public void setDispo(String dispo) {
+		this.strDispo = dispo;
 	}
 
 	public String getDatePublication() {
