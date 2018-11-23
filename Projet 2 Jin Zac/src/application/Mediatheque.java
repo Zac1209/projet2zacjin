@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
@@ -391,6 +392,37 @@ public class Mediatheque extends Application {// Remove extends application post
 				Button btnPret = new Button("Inscrire un pret");
 				btnPret.setPrefSize(200, 40);
 				VBox.setMargin(btnPret, new Insets(10));
+				
+				EventHandler<MouseEvent> eventPret = new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent e) {
+						// TODO Auto-generated method stub
+						VBox root = new VBox();
+						Scene scene = new Scene(root,750,525);
+						scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+						Stage primaryStage = new Stage();
+						primaryStage.setScene(scene);						
+						primaryStage.setTitle("Ajouter un document");
+						primaryStage.setResizable(false);						
+						primaryStage.show();
+						
+						final  ObservableList<String> lstDoc = FXCollections.observableArrayList();
+						
+						for (int i = 0; i < listeComplete.arListeDoc.size(); i++) {
+							lstDoc.add(listeComplete.arListeDoc.get(i).getTitre());
+						}
+						
+						final ListView<String> listeViewDoc = new ListView(lstDoc);
+						root.getChildren().add(listeViewDoc);
+
+						//HEHREHREHERHREHERH
+						//HEHRHEHREHREHER
+						//HERE
+						erreur pr find here
+					}
+				};
+				
+				btnPret.setOnMouseClicked(eventPret);
 
 				Button btnRetour = new Button("Inscrire un retour");
 				btnRetour.setPrefSize(200, 40);
