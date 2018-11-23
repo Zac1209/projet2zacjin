@@ -348,6 +348,13 @@ public class Mediatheque extends Application {// Remove extends application post
 								//RENDU ICI pas encore afficher
 							}
 						}
+						
+						Alert alert = new Alert(AlertType.INFORMATION);
+						alert.setTitle("Information");
+						alert.setHeaderText("Etat du compte");
+						alert.setContentText("Vous avez : " + docEmp + " Documents emprunte\n" + " et " + dette + "$ de dette");
+
+						alert.showAndWait();
 
 
 					}
