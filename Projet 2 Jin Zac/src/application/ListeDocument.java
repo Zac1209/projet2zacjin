@@ -17,12 +17,13 @@ public class ListeDocument {
 	private ListeDocument() throws IOException {
 		boolean fin = false;
 
-		FileInputStream fichier = new FileInputStream("document.ser");
-
-		ObjectInputStream is = new ObjectInputStream(fichier);
-		Document doc;
+		
 
 		try {
+			FileInputStream fichier = new FileInputStream("document.ser");
+
+			ObjectInputStream is = new ObjectInputStream(fichier);
+			Document doc;
 
 			while ((doc = (Document) is.readObject()) != null) {
 				arListeDoc.add(doc);

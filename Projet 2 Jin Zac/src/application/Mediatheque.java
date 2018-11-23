@@ -40,6 +40,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -302,6 +303,7 @@ public class Mediatheque extends Application {// Remove extends application post
 				Button btnGererUsers = new Button("gerer les adherants");
 				btnGererUsers.setPrefSize(200, 40);
 				VBox.setMargin(btnGererUsers, new Insets(10));
+				btnGererUsers.addEventHandler(MouseEvent.MOUSE_CLICKED, gestionAdherant);
 
 				Button btnPret = new Button("Inscrire un pret");
 				btnPret.setPrefSize(200, 40);
@@ -361,7 +363,48 @@ public class Mediatheque extends Application {// Remove extends application post
 			e.printStackTrace();
 		}
 	}
+	EventHandler<MouseEvent> gestionAdherant = new EventHandler <MouseEvent>() {
+		
+		@Override
+		public void handle(MouseEvent event) {
+			// TODO Auto-generated method stub
+			BorderPane root = new BorderPane();
+			Scene scene = new Scene(root,750,525);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			Stage primaryStage = new Stage();
+			primaryStage.setScene(scene);
+			primaryStage.show();
+			primaryStage.setTitle("gestion des Adhérents");
+			primaryStage.setResizable(false);
+			
+			Button btnAjouterAdherent = new Button("Ajouter");
+			Button btnModifierAdherent = new Button("Modifier");
+			Button btnFermer = new Button("Fermer");
+			Button btnPayerSolde = new Button("Payer un solde");
+			Button btnSupprimerAdherent = new Button("Supprimer");
+			
+			btnFermer.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					primaryStage.close();
+				}
 
+			});
+			btnAjouterAdherent.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+					alert.getButtonTypes().set(0, new ButtonType("Oui"));
+					alert.getButtonTypes().set(1, new ButtonType("Non"));
+					alert.setTitle("Ajouter un adhérent");
+					alert.setHeaderText("Veuillez entrer les informations de l'adhérent désiré.");
+					alert.setContentText("Voulez-vous quitter le programme et sauvegarder?");
+				}
+
+			});
+			
+		}
+	};
 	public static void main(String[] args) {// remove main post testing
 		launch(args);
 	}
