@@ -48,14 +48,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class Mediatheque extends Application {// Remove extends application post
+public class mediazac extends Application {// Remove extends application post
 												// testing
-	Label lblNoDVD;
-	Label lblVolume; 
-	Label lbPeriodique;
-	TextField tfNoDvd;
-	TextField tfVolume;
-	TextField tfPeriodique;
+
 	public void start(Stage primaryStage) {
 		try {
 
@@ -310,38 +305,10 @@ public class Mediatheque extends Application {// Remove extends application post
 						cbTypeDocument.getItems().setAll("Livre","DVD","Périodique");
 						cbTypeDocument.getSelectionModel().selectFirst();
 						TitledPane tpType = new TitledPane("Type de document", cbTypeDocument);
-						
+						String strValeurChoisie = cbTypeDocument.getValue();
 						cbTypeDocument.valueProperty().addListener(new ChangeListener<String>() {
 					        @Override public void changed(ObservableValue ov, String t, String t1) {
-					        	String strValeurChoisie = cbTypeDocument.getValue();
-					        	switch (strValeurChoisie) {
-								case "Livre":
-									lblVolume.setVisible(false);
-									lbPeriodique.setVisible(false);
-									tfVolume.setVisible(false);
-									tfPeriodique.setVisible(false);
-									lblNoDVD.setVisible(false);
-									tfNoDvd.setVisible(false);
-									break;
-								case "DVD":
-									lblNoDVD.setVisible(true);
-									tfNoDvd.setVisible(true);
-									
-									lblVolume.setVisible(false);
-									lbPeriodique.setVisible(false);
-									tfVolume.setVisible(false);
-									tfPeriodique.setVisible(false);
-									break;
-								case "Périodique":
-									lblVolume.setVisible(true);
-									lbPeriodique.setVisible(true);
-									tfVolume.setVisible(true);
-									tfPeriodique.setVisible(true);
-									
-									lblNoDVD.setVisible(false);
-									tfNoDvd.setVisible(false);
-									break;
-								}
+					          
 					        }    
 					    });
 						HBox hbSaisieInformation = new HBox();
@@ -350,28 +317,34 @@ public class Mediatheque extends Application {// Remove extends application post
 						Label lbTitre = new Label("Titre :");
 						Label lbAuteur = new Label("Auteur :");
 						Label lbDatePub = new Label("Date de publication :");
-						lblNoDVD = new Label("Nombre de dvd :"); //Seulement dvd
-						lblVolume = new Label("Numéro du volume : "); // seulement périodique
-						lbPeriodique = new Label("Numéro de la périodique :");// seulement périodique
+						Label lblNoDVD = new Label("Nombre de dvd :"); //Seulement dvd
+						Label lblVolume = new Label("Numéro du volume : "); // seulement périodique
+						Label lbPeriodique = new Label("Numéro de la périodique :");// seulement périodique
 						TextField tfTitre = new TextField();
 						TextField tfAuteur = new TextField();
 						TextField tfDatePub = new TextField();
-						tfNoDvd = new TextField();//Seulement dvd
-						tfVolume = new TextField();// seulement périodique
-						tfPeriodique = new TextField();// seulement périodique
-						vbSaiseLabel.getChildren().addAll(lbTitre,lbAuteur,lbDatePub,lblNoDVD,lblVolume,lbPeriodique);
-						vbSaisieTextField.getChildren().addAll(tfTitre,tfAuteur,tfDatePub,tfNoDvd,tfVolume,tfPeriodique);
+						TextField tfNoDvd = new TextField();//Seulement dvd
+						TextField tfVolume = new TextField();// seulement périodique
+						TextField tfPeriodique = new TextField();// seulement périodique
+						vbSaiseLabel.getChildren().addAll(lbTitre,lbAuteur,lbDatePub);
+						vbSaisieTextField.getChildren().addAll(tfTitre,tfAuteur,tfDatePub);
 						TitledPane tpSaisie = new TitledPane("Saisie d'informations",hbSaisieInformation);
 						vbSaiseLabel.setSpacing(10);
+						switch (strValeurChoisie) {
+						case "Livre":
+							break;
+						case "DVD":
+							vbSaiseLabel.getChildren().add(lblNoDVD);
+							vbSaisieTextField.getChildren().add(tfNoDvd);
+							break;
+						case "Périodique":
+							vbSaiseLabel.getChildren().addAll(lblVolume,lbPeriodique);
+							vbSaisieTextField.getChildren().addAll(tfVolume,tfPeriodique);
+							break;
+						}
 						hbSaisieInformation.getChildren().addAll(vbSaiseLabel,vbSaisieTextField);
 						root.getChildren().addAll(tpType,tpSaisie);
 						
-						lblNoDVD.setVisible(false);
-						lblVolume.setVisible(false);
-						lbPeriodique.setVisible(false);
-						tfNoDvd.setVisible(false);
-						tfVolume.setVisible(false);
-						tfPeriodique.setVisible(false);
 
 					}
 				};
@@ -431,13 +404,6 @@ public class Mediatheque extends Application {// Remove extends application post
 								//RENDU ICI pas encore afficher
 							}
 						}
-						
-						Alert alert = new Alert(AlertType.INFORMATION);
-						alert.setTitle("Information");
-						alert.setHeaderText("Etat du compte");
-						alert.setContentText("Vous avez : " + docEmp + " Documents emprunte\n" + " et " + dette + "$ de dette");
-
-						alert.showAndWait();
 
 
 					}
