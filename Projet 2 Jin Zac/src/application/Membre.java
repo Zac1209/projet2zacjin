@@ -19,6 +19,15 @@ public class Membre {
 		}
 		this.booEstPrepose = estPrepose;
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "Membre " + strNom + ", " + strPrenom + ", " + strNumTel;
+	}
+
+
 
 	public String getStrNom() {
 		return strNom;

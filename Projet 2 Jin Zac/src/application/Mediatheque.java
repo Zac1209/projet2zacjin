@@ -33,6 +33,8 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
@@ -61,6 +63,7 @@ public class Mediatheque extends Application {// Remove extends application post
 		try {
 
 			ListeDocument listeComplete = ListeDocument.getInstance();
+			ListeMembre lstMembre = ListeMembre.getInstance();
 
 			// +++++++++++++++++++++++++++++ FILE READING +++++++++++++++++++++++++++++++
 
@@ -398,27 +401,66 @@ public class Mediatheque extends Application {// Remove extends application post
 					public void handle(MouseEvent e) {
 						// TODO Auto-generated method stub
 						VBox root = new VBox();
-						Scene scene = new Scene(root,750,525);
+						Scene scene = new Scene(root,500,500);
+						HBox hb = new HBox();
 						scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 						Stage primaryStage = new Stage();
 						primaryStage.setScene(scene);						
 						primaryStage.setTitle("Ajouter un document");
 						primaryStage.setResizable(false);						
 						primaryStage.show();
+						Button btn1 = new Button("Emprunter");
+						btn1.setPrefSize(300, 100);
 						
+						
+						//++++++++++++++++++++++++++++++ lst doc +++++++++++++++++++++++++++++++++++++++
 						final  ObservableList<String> lstDoc = FXCollections.observableArrayList();
 						
-						for (int i = 0; i < listeComplete.arListeDoc.size(); i++) {
+						for (int i = 0; i < listeComplete.arListeDoc.size(); i++) 
 							lstDoc.add(listeComplete.arListeDoc.get(i).getTitre());
-						}
+						
 						
 						final ListView<String> listeViewDoc = new ListView(lstDoc);
-						root.getChildren().add(listeViewDoc);
-
-						//HEHREHREHERHREHERH
-						//HEHRHEHREHREHER
-						//HERE
-						erreur pr find here
+						//------------------------------------------------------------------------------
+						
+						//+++++++++++++++++++++++++++++ lst membre +++++++++++++++++++++++++++++++++++++
+						final ObservableList<String> lstMbr = FXCollections.observableArrayList();
+						//No membre
+						for(int i = 0; i < lstMembre.arListeMembre.size(); i++) {
+							lstMbr.add(lstMembre.arListeMembre.get(i).toString());
+							System.out.println(lstMembre.arListeMembre.get(i).toString());
+							
+						}
+						
+						final ListView<String> lvMembre = new ListView(lstMbr);
+						
+						//------------------------------------------------------------------------------
+						hb.getChildren().addAll(listeViewDoc, lvMembre);
+						
+						btn1.setOnAction(new EventHandler<ActionEvent>(){
+							@Override
+							public void handle(ActionEvent event) {
+								// TODO Auto-generated method stub
+								String titreChoisi = listeViewDoc.getSelectionModel().getSelectedItem();
+								Membre membreChoisi = lstMembre.arListeMembre.get((lvMembre.getSelectionModel().getSelectedIndex()));
+								
+								for (int i = 0; i < listeComplete.arListeDoc.size() && listeComplete.arListeDoc.get(i).getTitre().compareTo(titreChoisi)!=0; i++) {
+									lstDoc.add(listeComplete.arListeDoc.get(i).getTitre());
+									if( listeComplete.arListeDoc.get(i).getTitre().compareTo(titreChoisi) == 0 )
+									{
+									Alert alert = new Alert(AlertType.INFORMATION);
+									alert.setTitle("Emprunt");
+									alert.setHeaderText("+++++++++++");
+									alert.setContentText(listeComplete.arListeDoc.get(i).Emprunt(membreChoisi.getStrNom(), membreChoisi.getStrPrenom(), membreChoisi.getStrNumTel()));
+									alert.showAndWait();
+									//Alert pr afficher le message de succes/echec de emprunt
+									}
+								}
+								
+							}});
+						
+						root.getChildren().addAll(hb,btn1);
+						
 					}
 				};
 				
@@ -427,6 +469,57 @@ public class Mediatheque extends Application {// Remove extends application post
 				Button btnRetour = new Button("Inscrire un retour");
 				btnRetour.setPrefSize(200, 40);
 				VBox.setMargin(btnRetour, new Insets(10));
+				
+				btnRetour.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						// TODO Auto-generated method stub
+						VBox root = new VBox();
+						Scene scene = new Scene(root,500,500);
+						HBox hb = new HBox();
+						scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+						Stage primaryStage = new Stage();
+						primaryStage.setScene(scene);						
+						primaryStage.setTitle("Ajouter un document");
+						primaryStage.setResizable(false);						
+						primaryStage.show();
+						Button btn1 = new Button("Retourner");
+						btn1.setPrefSize(300, 100);
+						
+						
+						
+						//++++++++++++++++++++++++++++++ lst doc +++++++++++++++++++++++++++++++++++++++
+						final  ObservableList<String> lstDoc = FXCollections.observableArrayList();
+						
+						for (int i = 0; i < listeComplete.arListeDoc.size(); i++) 
+						{
+							if(listeComplete.arListeDoc.get(i).getNomEmp() != null)
+							lstDoc.add(listeComplete.arListeDoc.get(i).getTitre());
+						}
+						
+						final ListView<String> listeViewDoc = new ListView(lstDoc);
+						
+						btn1.setOnAction(new EventHandler<ActionEvent>(){
+							@Override
+							public void handle(ActionEvent event) {
+								// TODO Auto-generated method stub
+								String titreChoisi = listeViewDoc.getSelectionModel().getSelectedItem();
+								
+								for (int i = 0; i < listeComplete.arListeDoc.size() && titreChoisi.compareTo(listeComplete.arListeDoc.get(i).getTitre())!= 0; i++) {
+									if(titreChoisi.compareTo(listeComplete.arListeDoc.get(i).getTitre())== 0) {
+										listeComplete.arListeDoc.get(i).setNomEmp(null);
+										listeComplete.arListeDoc.get(i).setPrenomEmp(null);
+										listeComplete.arListeDoc.get(i).setDateEmprunt(null);
+										listeComplete.arListeDoc.get(i).setNumTel(null);
+									}
+										
+								}
+								
+							}});
+						
+						root.getChildren().addAll(listeViewDoc,btn1);
+						
+					}});
 
 				
 				rightSide.getChildren().addAll(recherche, btnAjoutDoc, btnSuprDoc, btnGererUsers, btnPret, btnRetour);

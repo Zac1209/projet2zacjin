@@ -32,7 +32,7 @@ public class Document implements Serializable{
 		strDispo = "oui";
 	}
 
-	public String Emprunt(String nom, String prenom, int numTel ) {
+	public String Emprunt(String nom, String prenom, String numTel ) {
 		
 		if(dateEmprunt != null)
 		{
