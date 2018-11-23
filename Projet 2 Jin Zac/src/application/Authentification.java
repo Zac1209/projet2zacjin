@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -41,6 +42,7 @@ public class Authentification {
 	private static String strTelephone;
 	private static String strNoEmploye;
 	private static String strMotDePasse;
+	ListeMembre lstMembre = ListeMembre.getInstance();
 
 	public void start(Stage primaryStage) {
 		try {
@@ -82,14 +84,40 @@ public class Authentification {
 				public void handle(ActionEvent event) {
 					booConnexionViaMembrePersonnel = true;
 					strNoEmploye = tfIdEmployer.getText();
-					strMotDePasse = pfPasswordEmployer.getText();
+					int compteur = 0;
+					strMotDePasse = pfPasswordEmployer.getText();	
+					
 					if(strNoEmploye.trim().equals("") || strMotDePasse.trim().equals("")) {
 						Alerte("Veuillez entrer un numéro d'employé ET un mot de passe valide", "Erreur");
-					}else {
-						Mediatheque media = new Mediatheque();
-						Stage stage = new Stage();
-						media.start(stage);
-						primaryStage.close();
+					}
+					
+					else {
+						for(; compteur < ListeMembre.arListeMembre.size() && strNoEmploye.compareTo(ListeMembre.arListeMembre.get(compteur).getStrIdPrep()) != 0; compteur++)
+						{
+							if(strNoEmploye.compareTo(ListeMembre.arListeMembre.get(compteur).getStrIdPrep()) == 0)
+							{
+								Mediatheque media = new Mediatheque();
+								Stage stage = new Stage();
+								media.start(stage);
+								primaryStage.close();
+							}
+							if(compteur == ListeMembre.arListeMembre.size())
+							{
+								Alert alert = new Alert(AlertType.INFORMATION);
+								alert.getButtonTypes().set(0, new ButtonType("ok"));
+								alert.setTitle("Nop");
+								alert.setHeaderText("Erreur");
+								alert.setContentText("Ce numero n'existe pas");
+							}
+						
+							if(/*ListeMembre.arListeMembre.get(compteur).getMotdepasse().comparedTo(strMotDePasse) == 0*/1==1)a fix
+							{
+								Mediatheque media = new Mediatheque();
+								Stage stage = new Stage();
+								media.start(stage);
+								primaryStage.close();
+							}
+						}
 					}
 				}
 

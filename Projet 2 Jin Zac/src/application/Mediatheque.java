@@ -608,9 +608,8 @@ public class Mediatheque extends Application {// Remove extends application post
 			btnAjouterAdherent.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					Alert alert = new Alert(AlertType.CONFIRMATION);
-					alert.getButtonTypes().set(0, new ButtonType("Oui"));
-					alert.getButtonTypes().set(1, new ButtonType("Non"));
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.getButtonTypes().set(0, new ButtonType("Ok"));
 					alert.setTitle("Ajouter un adhérent");
 					alert.setHeaderText("Veuillez entrer les informations de l'adhérent désiré.");
 					alert.setContentText("Voulez-vous quitter le programme et sauvegarder?");
