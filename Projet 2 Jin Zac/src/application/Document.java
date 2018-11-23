@@ -14,7 +14,7 @@ public class Document {
 	private String strDispo;
 	private String strDatePublication;
 	
-	private Date dateEmprunt;
+	protected Date dateEmprunt;
 	private String strNomEmprunteur;
 	private String strPrenomEmprunteur;
 	private String strNumeroTelephone;
