@@ -43,10 +43,12 @@ import javafx.stage.WindowEvent;
 
 public class Mediatheque extends Application {// Remove extends application post testing
 
+	
+	
 	public void start(Stage primaryStage) {
 		try {
-			
-			//ListeDocument listeDeToutLesDocs = new ListeDocument(); 
+
+			ListeDocument listeComplete = ListeDocument.getInstance();
 
 			// +++++++++++++++++++++++++++++ FILE READING +++++++++++++++++++++++++++++++
 
@@ -141,6 +143,10 @@ public class Mediatheque extends Application {// Remove extends application post
 			tabDoc.setItems(listDoc);
 			
 			//for each document in list document add to listdoc
+			for(int i = 0 ; i < listeComplete.arListeDoc.size();i++)
+			{
+				listDoc.add(listeComplete.arListeDoc.get(i));
+			}
 			 
 			 
 			// +++++++++++++++++++++++++++++++++++ LIVRE ++++++++++++++++++++++++++++++++++++++ @here
@@ -173,6 +179,11 @@ public class Mediatheque extends Application {// Remove extends application post
 			
 			//for each document in list document if the document iterated instance of Livre add to listlivre Repeat for perio et dvd
 			//if(Livre.class.instance.isInstance(objet))
+			for(int i = 0 ; i < listeComplete.arListeDoc.size();i++)
+			{
+				if(Livre.class.isInstance(listeComplete.arListeDoc.get(i)))
+				listDoc.add(listeComplete.arListeDoc.get(i));
+			}
 
 			
 			// +++++++++++++++++++++++++++++++++ PERIODIQUE ++++++++++++++++++++++++++++++++++++++++++
@@ -205,6 +216,12 @@ public class Mediatheque extends Application {// Remove extends application post
 
 
 			root.getChildren().add(tabPane);
+			
+			for(int i = 0 ; i < listeComplete.arListeDoc.size();i++)
+			{
+				if(Periodique.class.isInstance(listeComplete.arListeDoc.get(i)))
+				listDoc.add(listeComplete.arListeDoc.get(i));
+			}
 			
 			// +++++++++++++++++++++++++++++ OPTIONS A DROITE ++++++++++++++++++++++++++++++++++++++
 			
