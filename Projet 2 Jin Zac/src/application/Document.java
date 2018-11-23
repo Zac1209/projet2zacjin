@@ -1,5 +1,6 @@
 package application;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ public class Document {
 	private String strNomEmprunteur;
 	private String strPrenomEmprunteur;
 	private String strNumeroTelephone;
-	private ArrayList<String> motsCles;
 	
 	public Document(String num ,String titre, String auteur, String datePublication){
 		strNumero = num;
