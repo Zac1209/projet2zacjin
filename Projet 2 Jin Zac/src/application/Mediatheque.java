@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.Event;
+import java.io.IOException;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
@@ -662,8 +663,7 @@ public class Mediatheque extends Application {// Remove extends application post
 
 						for (int i = 0; i < listeComplete.arListeDoc.size(); i++) {
 							if (Authentification.getStrNom() == listeComplete.arListeDoc.get(i).getNomEmp()
-									&& Authentification.getStrPrenom() == listeComplete.arListeDoc.get(i)
-											.getPrenomEmp()) {
+									&& Authentification.getStrPrenom() == listeComplete.arListeDoc.get(i).getPrenomEmp()) {
 								double frais = 0;
 								int gap;
 								docEmp++;
@@ -675,7 +675,7 @@ public class Mediatheque extends Application {// Remove extends application post
 									frais = (gap - 3) * 0.5;
 								if (listeComplete.arListeDoc.get(i) instanceof DVD && gap > 7)
 									frais = (gap - 7) * 0.5;
-								// RENDU ICI pas encore afficher
+								
 							}
 						}
 
@@ -701,9 +701,17 @@ public class Mediatheque extends Application {// Remove extends application post
 	}
 
 	EventHandler<MouseEvent> gestionAdherant = new EventHandler<MouseEvent>() {
+		
+		
 
 		@Override
 		public void handle(MouseEvent event) {
+			
+			try {
+				
+			ListeDocument listeComplete = ListeDocument.getInstance();
+			ListeMembre lstMembre = ListeMembre.getInstance();
+			
 			// TODO Auto-generated method stub
 			BorderPane root = new BorderPane();
 			Scene scene = new Scene(root, 1000, 525);
@@ -736,6 +744,7 @@ public class Mediatheque extends Application {// Remove extends application post
 					btnSupprimerAdherent);
 			TitledPane tpAction = new TitledPane("Actions", hbAction);
 			root.getChildren().addAll(hbAction);
+			
 			btnFermer.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -743,18 +752,241 @@ public class Mediatheque extends Application {// Remove extends application post
 				}
 
 			});
-			btnAjouterAdherent.setOnAction(new EventHandler<ActionEvent>() {
+			
+			btnSupprimerAdherent.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.getButtonTypes().set(0, new ButtonType("Ok"));
-					alert.setTitle("Ajouter un adhérent");
-					alert.setHeaderText("Veuillez entrer les informations de l'adhérent désiré.");
-					alert.setContentText("Voulez-vous quitter le programme et sauvegarder?");
+					VBox root = new VBox();
+					Scene scene = new Scene(root, 300, 500);
+					scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+					Stage primaryStage = new Stage();
+					primaryStage.setScene(scene);
+					primaryStage.setTitle("supprimer un adherant");
+					primaryStage.setResizable(false);
+					primaryStage.show();
+					
+					final ObservableList<String> lstMbr = FXCollections.observableArrayList();
+					
+					for (int i = 0; i < lstMembre.arListeMembre.size(); i++) {
+						if(!lstMembre.arListeMembre.get(i).isBooEstPrepose())
+						lstMbr.add(lstMembre.arListeMembre.get(i).toString());
+						System.out.println(lstMembre.arListeMembre.get(i).toString()); // print à garder
+
+					}
+
+					final ListView<String> lvMembre = new ListView(lstMbr);
+					
+					Button btnSup = new Button("Supprimer");
+					
+					root.getChildren().addAll(lvMembre,btnSup);
+					
+					btnSup.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							// TODO Auto-generated method stub
+							String membreChoisi = lvMembre.getSelectionModel().getSelectedItem();
+							
+							for(int i =0 ; i < lstMembre.arListeMembre.size() && lstMembre.arListeMembre.get(i).toString().compareTo(membreChoisi)!=0;i++)
+							{
+								if(lstMembre.arListeMembre.get(i).toString().compareTo(membreChoisi)== 0)
+								{
+									lstMembre.arListeMembre.remove(i);
+								}
+									
+							}
+
+							
+
+						}
+					});
 				}
 
 			});
+			
+			btnModifierAdherent.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					VBox root = new VBox();
+					Scene scene = new Scene(root, 300, 500);
+					scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+					Stage primaryStage = new Stage();
+					primaryStage.setScene(scene);
+					primaryStage.setTitle("Modifier un adherant");
+					primaryStage.setResizable(false);
+					primaryStage.show();
+					
+					final ObservableList<String> lstMbr = FXCollections.observableArrayList();
+					
+					for (int i = 0; i < lstMembre.arListeMembre.size(); i++) {
+						if(!lstMembre.arListeMembre.get(i).isBooEstPrepose())
+						lstMbr.add(lstMembre.arListeMembre.get(i).toString());
+						System.out.println(lstMembre.arListeMembre.get(i).toString()); // print à garder
 
+					}
+
+					final ListView<String> lvMembre = new ListView(lstMbr);
+					
+					
+					Button btnMod = new Button("Appliquer les modifications");
+					
+					
+					Label lblAdresse = new Label("addresse");
+					TextField tAdresse = new TextField();
+					HBox hAdresse = new HBox();
+					hAdresse.getChildren().addAll(lblAdresse,tAdresse);
+					
+					Label lblTel = new Label("addresse");
+					TextField tTel = new TextField();
+					HBox hTel = new HBox();
+					hAdresse.getChildren().addAll(lblTel,tTel);
+					
+					root.getChildren().addAll(lvMembre, btnMod, hAdresse, hTel);
+					
+					
+					btnMod.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							// TODO Auto-generated method stub
+							String membreChoisi = lvMembre.getSelectionModel().getSelectedItem();
+							
+							for(int i =0 ; i < lstMembre.arListeMembre.size() && lstMembre.arListeMembre.get(i).toString().compareTo(membreChoisi)!=0;i++)
+							{
+								if(lstMembre.arListeMembre.get(i).toString().compareTo(membreChoisi)== 0)
+								{
+									lstMembre.arListeMembre.get(i).setAddress(tAdresse.getText());
+									lstMembre.arListeMembre.get(i).setStrNumTel(tTel.getText());
+								}
+									
+							}
+
+							
+
+						}
+					});
+				}
+
+			});
+			
+			btnAjouterAdherent.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					VBox root = new VBox();
+					Scene scene = new Scene(root, 300, 300);
+					scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+					Stage primaryStage = new Stage();
+					primaryStage.setScene(scene);
+					primaryStage.setTitle("Ajouter adherant");
+					primaryStage.setResizable(false);
+					primaryStage.show();
+					
+					HBox hnom = new HBox();
+					HBox hprenom = new HBox();
+					HBox hnumero = new HBox();
+					
+					Label lnom = new Label("nom");
+					Label lprenom = new Label("prenom");
+					Label lnum = new Label("Numero de telephone");
+					
+					TextField tnom = new TextField();
+					TextField tprenom = new TextField();
+					TextField tnum = new TextField();
+					
+					Button btn1 = new Button("ajouter");
+					
+					root.getChildren().addAll(hnom,hprenom,hnumero,btn1);
+					hnom.getChildren().addAll(lnom,tnom);
+					hprenom.getChildren().addAll(lprenom,tprenom);
+					hnumero.getChildren().addAll(lnum,tnum);
+					
+					btn1.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+						
+							if(tnom == null || tprenom == null)
+							{
+								Alert alert = new Alert(AlertType.INFORMATION);
+								alert.setTitle("Information");
+								alert.setHeaderText("++++++++++");
+								alert.setContentText("Le nom et le prenom sont obligatoire");
+								alert.showAndWait();
+							}
+							else
+							{
+								Membre ajout = new Membre(tnom.getText(), tprenom.getText(), tnum.getText(), null, false, null);
+								ListeMembre.arListeMembre.add(ajout);
+								Alert alert = new Alert(AlertType.INFORMATION);
+								alert.setTitle("Information");
+								alert.setHeaderText("++++++++++");
+								alert.setContentText(tnom.getText() + " " + tprenom.getText() + " a ete ajouter");
+								alert.showAndWait();
+							}
+							
+							
+						}
+
+					});
+					
+					
+				}
+
+			});
+			
+			btnPayerSolde.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+						//this is not done
+					
+					VBox root = new VBox();
+					Scene scene = new Scene(root, 500, 500);
+					HBox hb = new HBox();
+					scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+					Stage primaryStage = new Stage();
+					primaryStage.setScene(scene);
+					primaryStage.setTitle("Payer une solde");
+					primaryStage.setResizable(false);
+					primaryStage.show();
+					
+					Button btnPay = new Button("Payer les frais");
+					int dette = 0;
+					
+					final ObservableList<String> lstMbr = FXCollections.observableArrayList();
+					
+					for (int i = 0; i < lstMembre.arListeMembre.size(); i++) {
+						if(!lstMembre.arListeMembre.get(i).isBooEstPrepose() )
+						lstMbr.add(lstMembre.arListeMembre.get(i).toString());
+
+					}
+
+					final ListView<String> lvMembre = new ListView(lstMbr);
+					
+					root.getChildren().addAll(lvMembre, btnPay);
+					
+					btnPay.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							Boolean trouver = false;
+							String Choisi = lvMembre.getSelectionModel().getSelectedItem();
+							for (int i = 0; i < lstMembre.arListeMembre.size()&& !trouver; i++) {
+								if(lstMembre.arListeMembre.get(i).toString().compareTo(Choisi)==0 )
+								{
+									trouver = true;
+									lstMembre.arListeMembre.get(i).setIntDette(0);
+								}
+
+							}
+						}
+
+					});
+				
+					
+					
+				}
+
+			});
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	};
 }

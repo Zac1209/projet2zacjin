@@ -11,10 +11,41 @@ public class Membre implements Serializable{
 	private String strNom;
 	private String strPrenom;
 	private String strNumTel = null;//seulement pour les adhérants
+	public void setStrNumTel(String strNumTel) {
+		this.strNumTel = strNumTel;
+	}
+
+
+
 	private String strIdPrep = null;//seulement pour les préposés
 	private String strMotDePasse = null;//seulement pour les préposés
 	private boolean booEstPrepose;
 	private int intDette;
+	private String address;
+
+	public String getAddress() {
+		return address;
+	}
+
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+
+	public int getIntDette() {
+		return intDette;
+	}
+
+
+
+	public void setIntDette(int intDette) {
+		this.intDette = intDette;
+	}
+
+
 
 	public Membre(String nom, String prenom, String numTel, String idPrep, boolean estPrepose, String mdp) {
 		this.strNom = nom;
