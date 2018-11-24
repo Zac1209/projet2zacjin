@@ -17,6 +17,12 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
@@ -36,7 +42,8 @@ import javafx.stage.Stage;
 public class Authentification {
 	private boolean NomAfficher = true;
 	private boolean booUtilisationTelephoneConnexion = false;
-	private static boolean booConnexionViaMembrePersonnel; //Savoir si on se connecte via un membre du personnel ou adhérant
+	private static boolean booConnexionViaMembrePersonnel; // Savoir si on se connecte via un membre du personnel ou
+															// adhérant
 	private static String strPrenom;
 	private static String strNom;
 	private static String strTelephone;
@@ -54,6 +61,8 @@ public class Authentification {
 			primaryStage.setTitle("Bienvenue à la médiathèque");
 			primaryStage.setResizable(false);
 			root.setPadding(new Insets(10, 10, 10, 10));
+			Alerte("Pour Mme Cherief: Connection employé id 1, mdp 1, adhérant nom guo prénom jin numéro de teléphone 4504556749",
+					"Information");
 			// Création des pane composant la page
 			// VBox globale du login
 			VBox vboxLogin = new VBox();
@@ -85,31 +94,28 @@ public class Authentification {
 					booConnexionViaMembrePersonnel = true;
 					strNoEmploye = tfIdEmployer.getText();
 					int compteur = 0;
-					strMotDePasse = pfPasswordEmployer.getText();	
-					if(strNoEmploye.trim().equals("") || strMotDePasse.trim().equals("")) {
+					strMotDePasse = pfPasswordEmployer.getText();
+					if (strNoEmploye.trim().equals("") || strMotDePasse.trim().equals("")) {
 						Alerte("Veuillez entrer un numéro d'employé ET un mot de passe valide", "Erreur");
-					}
-					else {
+					} else {
 						boolean booTrouve = false;
-						for(; compteur < ListeMembre.arListeMembre.size() && booTrouve != true; compteur++) {
-							if(strNoEmploye.equals(ListeMembre.arListeMembre.get(compteur).getStrIdPrep()))
-							{
+						for (; compteur < ListeMembre.arListeMembre.size() && booTrouve != true; compteur++) {
+							if (strNoEmploye.equals(ListeMembre.arListeMembre.get(compteur).getStrIdPrep())) {
 								booTrouve = true;
-								if(ListeMembre.arListeMembre.get(compteur).getStrMotDePasse().equals(strMotDePasse)) {
+								if (ListeMembre.arListeMembre.get(compteur).getStrMotDePasse().equals(strMotDePasse)) {
 									Mediatheque media = new Mediatheque();
 									Stage stage = new Stage();
 									media.start(stage);
 									primaryStage.close();
+								} else {
+									Alerte("Mot de passe incorect", "Erreur");
 								}
-								else {
-									Alerte("Mot de passe incorect","Erreur");
-								}
-								
+
 							}
-						
+
 						}
-						if(booTrouve == false) {
-							Alerte("ID incorrect","Erreur");
+						if (booTrouve == false) {
+							Alerte("ID incorrect", "Erreur");
 						}
 					}
 				}
@@ -181,10 +187,31 @@ public class Authentification {
 						}
 					}
 					if (booOk == true) {
-						Mediatheque media = new Mediatheque();
-						Stage stage = new Stage();
-						media.start(stage);
-						primaryStage.close();
+						boolean booTrouve = false;
+						int compteur = 0;
+						for (; compteur < ListeMembre.arListeMembre.size() && booTrouve != true; compteur++) {
+							if (booUtilisationTelephoneConnexion) {
+								if (ListeMembre.arListeMembre.get(compteur).getStrNumTel().equals(strTelephone)) {
+									booTrouve = true;
+								}
+							} else {
+								if (ListeMembre.arListeMembre.get(compteur).getStrNom().toLowerCase()
+										.equals(strNom.toLowerCase().trim())
+										&& ListeMembre.arListeMembre.get(compteur).getStrPrenom().toLowerCase()
+												.equals(strPrenom.toLowerCase().trim())) {
+									booTrouve = true;
+								}
+							}
+
+						}
+						if (booTrouve == false) {
+							Alerte("Identifiants incorrects", "Erreur");
+						} else {
+							Mediatheque media = new Mediatheque();
+							Stage stage = new Stage();
+							media.start(stage);
+							primaryStage.close();
+						}
 					}
 
 				}

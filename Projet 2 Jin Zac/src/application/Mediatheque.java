@@ -1,7 +1,9 @@
 package application;
 
 import java.awt.Event;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 
 import javafx.application.Application;
@@ -18,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
@@ -50,15 +53,17 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.converter.DateTimeStringConverter;
 
 public class Mediatheque extends Application {// Remove extends application post
 												// testing
 	Label lblNoDVD;
-	Label lblVolume; 
+	Label lblVolume;
 	Label lbPeriodique;
 	TextField tfNoDvd;
 	TextField tfVolume;
 	TextField tfPeriodique;
+
 	public void start(Stage primaryStage) {
 		try {
 
@@ -115,7 +120,7 @@ public class Mediatheque extends Application {// Remove extends application post
 			tab4.setClosable(false);
 
 			tabPane.getTabs().addAll(tab1, tab2, tab3, tab4);
-			
+
 			root.getChildren().add(tabPane);
 
 			// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -161,7 +166,8 @@ public class Mediatheque extends Application {// Remove extends application post
 				listDoc.add(listeComplete.arListeDoc.get(i));
 			}
 
-			// +++++++++++++++++++++++++++++++++++ LIVRE ++++++++++++++++++++++++++++++++++++++
+			// +++++++++++++++++++++++++++++++++++ LIVRE
+			// ++++++++++++++++++++++++++++++++++++++
 
 			// THE TABLE
 			TableView<Livre> tabLivre = new TableView<Livre>();
@@ -184,8 +190,7 @@ public class Mediatheque extends Application {// Remove extends application post
 			// THE OLIST
 			ObservableList<Livre> listLivre = FXCollections.observableArrayList();
 
-
-			colNumLivre.setCellValueFactory(new PropertyValueFactory<>("strNumero"));	
+			colNumLivre.setCellValueFactory(new PropertyValueFactory<>("strNumero"));
 			colTitreLivre.setCellValueFactory(new PropertyValueFactory<>("titre"));
 			colAuteurLivre.setCellValueFactory(new PropertyValueFactory<>("auteur"));
 
@@ -196,7 +201,8 @@ public class Mediatheque extends Application {// Remove extends application post
 					listLivre.add((Livre) listeComplete.arListeDoc.get(i));
 			}
 
-			// +++++++++++++++++++++++++++++++++ PERIODIQUE ++++++++++++++++++++++++++++++++++++++++++
+			// +++++++++++++++++++++++++++++++++ PERIODIQUE
+			// ++++++++++++++++++++++++++++++++++++++++++
 
 			// THE TABLE
 			TableView<Periodique> tabP = new TableView<Periodique>();
@@ -207,13 +213,16 @@ public class Mediatheque extends Application {// Remove extends application post
 
 			TableColumn<Periodique, String> colTitreP = new TableColumn<Periodique, String>("Titre");
 			colTitreP.setPrefWidth(120);
-			colTitreP.setMaxWidth(120);
 
-			TableColumn<Periodique, String> colAuteurP = new TableColumn<Periodique, String>("Numero du periodique");
-			colAuteurP.setPrefWidth(120);
-			colAuteurP.setPrefWidth(120);
+			TableColumn<Periodique, String> colAuteurP = new TableColumn<Periodique, String>("Numero de la périodique");
+			colAuteurP.setPrefWidth(150);
+			colAuteurP.setMaxWidth(150);
 
-			tabP.getColumns().addAll(colNumP, colTitreP, colAuteurP);
+			TableColumn<Periodique, String> colNumV = new TableColumn<Periodique, String>("Numéro du volume");
+			colNumV.setPrefWidth(120);
+			colNumV.setMaxWidth(120);
+
+			tabP.getColumns().addAll(colNumP, colTitreP, colAuteurP, colNumV);
 			tab3.setContent(tabP);
 
 			// THE OLIST
@@ -222,6 +231,7 @@ public class Mediatheque extends Application {// Remove extends application post
 			colNumP.setCellValueFactory(new PropertyValueFactory<>("strNumero"));
 			colTitreP.setCellValueFactory(new PropertyValueFactory<>("titre"));
 			colAuteurP.setCellValueFactory(new PropertyValueFactory<>("strNumeroPeriodique"));
+			colNumV.setCellValueFactory(new PropertyValueFactory<>("strNumeroVolume"));
 
 			tabP.setItems(listP);
 
@@ -230,12 +240,13 @@ public class Mediatheque extends Application {// Remove extends application post
 					listP.add((Periodique) listeComplete.arListeDoc.get(i));
 			}
 
-			// +++++++++++++++++++++++++++++++++ DVD ++++++++++++++++++++++++++++++++++++++++++
+			// +++++++++++++++++++++++++++++++++ DVD
+			// ++++++++++++++++++++++++++++++++++++++++++
 
 			// THE TABLE
 			TableView<DVD> tabD = new TableView<DVD>();
 
-			TableColumn<DVD, String> colNumD = new TableColumn<DVD, String>("Numéro Périodique");
+			TableColumn<DVD, String> colNumD = new TableColumn<DVD, String>("Nombre de DVD");
 			colNumD.setPrefWidth(120);
 			colNumD.setMaxWidth(120);
 
@@ -264,61 +275,45 @@ public class Mediatheque extends Application {// Remove extends application post
 					listD.add((DVD) listeComplete.arListeDoc.get(i));
 			}
 
-			// +++++++++++++++++++++++++++++ OPTIONS A DROITE ++++++++++++++++++++++++++++++++++++++
+			// +++++++++++++++++++++++++++++ OPTIONS A DROITE
+			// ++++++++++++++++++++++++++++++++++++++
 
 			VBox rightSide = new VBox();
 			rightSide.setPrefSize(200, 600);
 			rightSide.setPadding(new Insets(20));
 			rightSide.setAlignment(Pos.TOP_CENTER);
-			VBox recherche = new VBox();
-			Label lblR = new Label("recherche");
-			TextField tfR = new TextField();
-			
-			//RECHERCHER????? REMOVE IF NOT DONE
-			EventHandler<KeyEvent> gestionClavier = new EventHandler<KeyEvent>() {
-				@Override
-				public void handle(KeyEvent e) {
-					// TODO Auto-generated method stub
 
-				}
-			};
-
-			tfR.setOnKeyTyped(gestionClavier);
-			tfR.setPrefSize(200, 30);
-
-			recherche.getChildren().addAll(lblR, tfR);
-			
 			root.getChildren().add(rightSide);
-			
+
 			if (Authentification.getBooConnexionViaMembrePersonnel()) {
 
 				Button btnAjoutDoc = new Button("Ajouter un Document");
 				btnAjoutDoc.setPrefSize(200, 40);
 				VBox.setMargin(btnAjoutDoc, new Insets(10));
-				
-				
+
 				EventHandler<MouseEvent> eventAjoutDoc = new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent e) {
 						// TODO Auto-generated method stub
 						VBox root = new VBox();
-						Scene scene = new Scene(root,750,525);
+						Scene scene = new Scene(root, 500, 525);
 						scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 						Stage primaryStage = new Stage();
 						primaryStage.setScene(scene);
 						primaryStage.show();
 						primaryStage.setTitle("Ajouter un document");
 						primaryStage.setResizable(false);
-						
+
 						ComboBox<String> cbTypeDocument = new ComboBox();
-						cbTypeDocument.getItems().setAll("Livre","DVD","Périodique");
+						cbTypeDocument.getItems().setAll("Livre", "DVD", "Périodique");
 						cbTypeDocument.getSelectionModel().selectFirst();
 						TitledPane tpType = new TitledPane("Type de document", cbTypeDocument);
-						
+
 						cbTypeDocument.valueProperty().addListener(new ChangeListener<String>() {
-					        @Override public void changed(ObservableValue ov, String t, String t1) {
-					        	String strValeurChoisie = cbTypeDocument.getValue();
-					        	switch (strValeurChoisie) {
+							@Override
+							public void changed(ObservableValue ov, String t, String t1) {
+								String strValeurChoisie = cbTypeDocument.getValue();
+								switch (strValeurChoisie) {
 								case "Livre":
 									lblVolume.setVisible(false);
 									lbPeriodique.setVisible(false);
@@ -330,7 +325,7 @@ public class Mediatheque extends Application {// Remove extends application post
 								case "DVD":
 									lblNoDVD.setVisible(true);
 									tfNoDvd.setVisible(true);
-									
+
 									lblVolume.setVisible(false);
 									lbPeriodique.setVisible(false);
 									tfVolume.setVisible(false);
@@ -341,35 +336,119 @@ public class Mediatheque extends Application {// Remove extends application post
 									lbPeriodique.setVisible(true);
 									tfVolume.setVisible(true);
 									tfPeriodique.setVisible(true);
-									
+
 									lblNoDVD.setVisible(false);
 									tfNoDvd.setVisible(false);
 									break;
 								}
-					        }    
-					    });
+							}
+						});
 						HBox hbSaisieInformation = new HBox();
 						VBox vbSaiseLabel = new VBox();
 						VBox vbSaisieTextField = new VBox();
 						Label lbTitre = new Label("Titre :");
 						Label lbAuteur = new Label("Auteur :");
 						Label lbDatePub = new Label("Date de publication :");
-						lblNoDVD = new Label("Nombre de dvd :"); //Seulement dvd
+						lblNoDVD = new Label("Nombre de dvd :"); // Seulement dvd
 						lblVolume = new Label("Numéro du volume : "); // seulement périodique
 						lbPeriodique = new Label("Numéro de la périodique :");// seulement périodique
 						TextField tfTitre = new TextField();
 						TextField tfAuteur = new TextField();
-						TextField tfDatePub = new TextField();
-						tfNoDvd = new TextField();//Seulement dvd
+						DatePicker tfDatePub = new DatePicker();
+						tfNoDvd = new TextField();// Seulement dvd
 						tfVolume = new TextField();// seulement périodique
 						tfPeriodique = new TextField();// seulement périodique
-						vbSaiseLabel.getChildren().addAll(lbTitre,lbAuteur,lbDatePub,lblNoDVD,lblVolume,lbPeriodique);
-						vbSaisieTextField.getChildren().addAll(tfTitre,tfAuteur,tfDatePub,tfNoDvd,tfVolume,tfPeriodique);
-						TitledPane tpSaisie = new TitledPane("Saisie d'informations",hbSaisieInformation);
+						vbSaiseLabel.getChildren().addAll(lbTitre, lbAuteur, lbDatePub, lblNoDVD, lblVolume,
+								lbPeriodique);
+						vbSaisieTextField.getChildren().addAll(tfTitre, tfAuteur, tfDatePub, tfNoDvd, tfVolume,
+								tfPeriodique);
+						TitledPane tpSaisie = new TitledPane("Saisie d'informations", hbSaisieInformation);
 						vbSaiseLabel.setSpacing(10);
-						hbSaisieInformation.getChildren().addAll(vbSaiseLabel,vbSaisieTextField);
-						root.getChildren().addAll(tpType,tpSaisie);
-						
+						hbSaisieInformation.getChildren().addAll(vbSaiseLabel, vbSaisieTextField);
+						HBox hbBouttons = new HBox();
+						Button btnAnnuler = new Button("Annuler");
+						Button btnConfirmer = new Button("Confirmer");
+						hbBouttons.getChildren().addAll(btnAnnuler, btnConfirmer);
+						hbBouttons.setSpacing(4);
+						hbBouttons.setAlignment(Pos.CENTER_RIGHT);
+						root.getChildren().addAll(tpType, tpSaisie, hbBouttons);
+						btnAnnuler.setOnAction(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								// TODO Auto-generated method stub
+								primaryStage.close();
+							}
+						});
+						btnConfirmer.setOnAction(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								// TODO Auto-generated method stub
+								String strValeurChoisie = cbTypeDocument.getValue();
+								DateTimeStringConverter format = new DateTimeStringConverter(Locale.CANADA,
+										"dd-MM-yyyy");
+								switch (strValeurChoisie) {
+								case "Livre":
+									int intNumLivre = 0;
+									for (int i = 0; i < ListeDocument.arListeDoc.size(); i++) {
+										if (ListeDocument.arListeDoc.get(i) instanceof Livre) {
+											if (intNumLivre < Integer.parseInt(
+													ListeDocument.arListeDoc.get(i).getStrNumero().substring(3))) {
+												intNumLivre = Integer.parseInt(
+														ListeDocument.arListeDoc.get(i).getStrNumero().substring(3));
+											}
+										}
+									}
+									Livre livre = new Livre("Liv" + (intNumLivre + 1), tfTitre.getText().trim(),
+											Date.from(tfDatePub.getValue().atStartOfDay().atZone(ZoneId.systemDefault())
+													.toInstant()),
+											tfAuteur.getText().trim());
+									ListeDocument.arListeDoc.add(livre);
+									break;
+								case "DVD":
+									int intNumDvd = 0;
+									for (int i = 0; i < ListeDocument.arListeDoc.size(); i++) {
+										if (ListeDocument.arListeDoc.get(i) instanceof DVD) {
+											if (intNumDvd < Integer.parseInt(
+													ListeDocument.arListeDoc.get(i).getStrNumero().substring(3))) {
+												intNumDvd = Integer.parseInt(
+														ListeDocument.arListeDoc.get(i).getStrNumero().substring(3));
+											}
+										}
+									}
+									try {
+										DVD dvd = new DVD("DVD" + (intNumDvd + 1), tfTitre.getText().trim(),
+												Date.from(tfDatePub.getValue().atStartOfDay()
+														.atZone(ZoneId.systemDefault()).toInstant()),
+												Integer.parseInt(tfNoDvd.getText().trim()), tfAuteur.getText().trim());
+										ListeDocument.arListeDoc.add(dvd);
+									} catch (Exception e) {
+										System.out.println("Veuillez entrer un chiffre comme nombre de DVD");
+									}
+
+									break;
+								case "Périodique":
+									int intNumPer = 0;
+									for (int i = 0; i < ListeDocument.arListeDoc.size(); i++) {
+										if (ListeDocument.arListeDoc.get(i) instanceof DVD) {
+											if (intNumPer < Integer.parseInt(
+													ListeDocument.arListeDoc.get(i).getStrNumero().substring(3))) {
+												intNumPer = Integer.parseInt(
+														ListeDocument.arListeDoc.get(i).getStrNumero().substring(3));
+											}
+										}
+									}
+									Periodique per = new Periodique("Per" + (intNumPer + 1), tfTitre.getText().trim(),
+											Date.from(tfDatePub.getValue().atStartOfDay().atZone(ZoneId.systemDefault())
+													.toInstant()),
+											tfAuteur.getText().trim(), tfVolume.getText().trim(),
+											tfPeriodique.getText().trim());
+									ListeDocument.arListeDoc.add(per);
+									break;
+								}
+								primaryStage.close();
+							}
+						});
+
 						lblNoDVD.setVisible(false);
 						lblVolume.setVisible(false);
 						lbPeriodique.setVisible(false);
@@ -381,8 +460,7 @@ public class Mediatheque extends Application {// Remove extends application post
 				};
 
 				btnAjoutDoc.setOnMousePressed(eventAjoutDoc);
-				
-				
+
 				Button btnSuprDoc = new Button("Supprimer un document");
 				btnSuprDoc.setPrefSize(200, 40);
 				VBox.setMargin(btnSuprDoc, new Insets(10));
@@ -395,209 +473,269 @@ public class Mediatheque extends Application {// Remove extends application post
 				Button btnPret = new Button("Inscrire un pret");
 				btnPret.setPrefSize(200, 40);
 				VBox.setMargin(btnPret, new Insets(10));
-				
+
 				EventHandler<MouseEvent> eventPret = new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent e) {
 						// TODO Auto-generated method stub
 						VBox root = new VBox();
-						Scene scene = new Scene(root,500,500);
+						Scene scene = new Scene(root, 500, 500);
 						HBox hb = new HBox();
 						scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 						Stage primaryStage = new Stage();
-						primaryStage.setScene(scene);						
+						primaryStage.setScene(scene);
 						primaryStage.setTitle("Ajouter un document");
-						primaryStage.setResizable(false);						
+						primaryStage.setResizable(false);
 						primaryStage.show();
 						Button btn1 = new Button("Emprunter");
 						btn1.setPrefSize(300, 100);
-						
-						
-						//++++++++++++++++++++++++++++++ lst doc +++++++++++++++++++++++++++++++++++++++
-						final  ObservableList<String> lstDoc = FXCollections.observableArrayList();
-						
-						for (int i = 0; i < listeComplete.arListeDoc.size(); i++) 
+
+						// ++++++++++++++++++++++++++++++ lst doc
+						// +++++++++++++++++++++++++++++++++++++++
+						final ObservableList<String> lstDoc = FXCollections.observableArrayList();
+
+						for (int i = 0; i < listeComplete.arListeDoc.size(); i++)
 							lstDoc.add(listeComplete.arListeDoc.get(i).getTitre());
-						
-						
+
 						final ListView<String> listeViewDoc = new ListView(lstDoc);
-						//------------------------------------------------------------------------------
-						
-						//+++++++++++++++++++++++++++++ lst membre +++++++++++++++++++++++++++++++++++++
+						// ------------------------------------------------------------------------------
+
+						// +++++++++++++++++++++++++++++ lst membre
+						// +++++++++++++++++++++++++++++++++++++
 						final ObservableList<String> lstMbr = FXCollections.observableArrayList();
-						//No membre
-						for(int i = 0; i < lstMembre.arListeMembre.size(); i++) {
+						// No membre
+						for (int i = 0; i < lstMembre.arListeMembre.size(); i++) {
 							lstMbr.add(lstMembre.arListeMembre.get(i).toString());
-							System.out.println(lstMembre.arListeMembre.get(i).toString());
-							
+							System.out.println(lstMembre.arListeMembre.get(i).toString()); // print à garder
+
 						}
-						
+
 						final ListView<String> lvMembre = new ListView(lstMbr);
-						
-						//------------------------------------------------------------------------------
+
+						// ------------------------------------------------------------------------------
 						hb.getChildren().addAll(listeViewDoc, lvMembre);
-						
-						btn1.setOnAction(new EventHandler<ActionEvent>(){
+
+						btn1.setOnAction(new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent event) {
 								// TODO Auto-generated method stub
 								String titreChoisi = listeViewDoc.getSelectionModel().getSelectedItem();
-								Membre membreChoisi = lstMembre.arListeMembre.get((lvMembre.getSelectionModel().getSelectedIndex()));
-								
-								for (int i = 0; i < listeComplete.arListeDoc.size() && listeComplete.arListeDoc.get(i).getTitre().compareTo(titreChoisi)!=0; i++) {
+								Membre membreChoisi = lstMembre.arListeMembre
+										.get((lvMembre.getSelectionModel().getSelectedIndex()));
+
+								for (int i = 0; i < listeComplete.arListeDoc.size() && listeComplete.arListeDoc.get(i)
+										.getTitre().compareTo(titreChoisi) != 0; i++) {
 									lstDoc.add(listeComplete.arListeDoc.get(i).getTitre());
-									if( listeComplete.arListeDoc.get(i).getTitre().compareTo(titreChoisi) == 0 )
-									{
-									Alert alert = new Alert(AlertType.INFORMATION);
-									alert.setTitle("Emprunt");
-									alert.setHeaderText("+++++++++++");
-									alert.setContentText(listeComplete.arListeDoc.get(i).Emprunt(membreChoisi.getStrNom(), membreChoisi.getStrPrenom(), membreChoisi.getStrNumTel()));
-									alert.showAndWait();
-									//Alert pr afficher le message de succes/echec de emprunt
+									if (listeComplete.arListeDoc.get(i).getTitre().compareTo(titreChoisi) == 0) {
+										Alert alert = new Alert(AlertType.INFORMATION);
+										alert.setTitle("Emprunt");
+										alert.setHeaderText("+++++++++++");
+										alert.setContentText(
+												listeComplete.arListeDoc.get(i).Emprunt(membreChoisi.getStrNom(),
+														membreChoisi.getStrPrenom(), membreChoisi.getStrNumTel()));
+										alert.showAndWait();
+										// Alert pr afficher le message de succes/echec de emprunt
 									}
 								}
-								
-							}});
-						
-						root.getChildren().addAll(hb,btn1);
-						
+
+							}
+						});
+
+						root.getChildren().addAll(hb, btn1);
+
 					}
 				};
-				
+
 				btnPret.setOnMouseClicked(eventPret);
 
 				Button btnRetour = new Button("Inscrire un retour");
 				btnRetour.setPrefSize(200, 40);
 				VBox.setMargin(btnRetour, new Insets(10));
-				
-				btnRetour.setOnAction(new EventHandler<ActionEvent>(){
+
+				btnSuprDoc.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
 						// TODO Auto-generated method stub
 						VBox root = new VBox();
-						Scene scene = new Scene(root,500,500);
+						Scene scene = new Scene(root, 400, 200);
+						scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+						Stage primaryStage = new Stage();
+						primaryStage.setScene(scene);
+						primaryStage.setTitle("Supprimer un document");
+						primaryStage.setResizable(false);
+						primaryStage.show();
+						ComboBox cb = new ComboBox();
+						Button btnSupp = new Button("Supprimer");
+						Button btnAnnuler = new Button("Annuler");
+						HBox hBButton = new HBox();
+
+						btnAnnuler.setOnAction(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								primaryStage.close();
+							}
+						});
+						btnSupp.setOnAction(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+								ListeDocument.arListeDoc.remove(cb.getSelectionModel().getSelectedIndex());
+								primaryStage.close();
+							}
+						});
+
+						for (int i = 0; i < ListeDocument.arListeDoc.size(); i++) {
+							cb.getItems().add(ListeDocument.arListeDoc.get(i));
+						}
+						cb.getSelectionModel().selectFirst();
+						hBButton.getChildren().addAll(btnAnnuler, btnSupp);
+						root.getChildren().addAll(cb, hBButton);
+					}
+				});
+
+				btnRetour.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						// TODO Auto-generated method stub
+						VBox root = new VBox();
+						Scene scene = new Scene(root, 500, 500);
 						HBox hb = new HBox();
 						scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 						Stage primaryStage = new Stage();
-						primaryStage.setScene(scene);						
+						primaryStage.setScene(scene);
 						primaryStage.setTitle("Ajouter un document");
-						primaryStage.setResizable(false);						
+						primaryStage.setResizable(false);
 						primaryStage.show();
 						Button btn1 = new Button("Retourner");
 						btn1.setPrefSize(300, 100);
-						
-						
-						
-						//++++++++++++++++++++++++++++++ lst doc +++++++++++++++++++++++++++++++++++++++
-						final  ObservableList<String> lstDoc = FXCollections.observableArrayList();
-						
-						for (int i = 0; i < listeComplete.arListeDoc.size(); i++) 
-						{
-							if(listeComplete.arListeDoc.get(i).getNomEmp() != null)
-							lstDoc.add(listeComplete.arListeDoc.get(i).getTitre());
+
+						// ++++++++++++++++++++++++++++++ lst doc
+						// +++++++++++++++++++++++++++++++++++++++
+						final ObservableList<String> lstDoc = FXCollections.observableArrayList();
+
+						for (int i = 0; i < listeComplete.arListeDoc.size(); i++) {
+							if (listeComplete.arListeDoc.get(i).getNomEmp() != null)
+								lstDoc.add(listeComplete.arListeDoc.get(i).getTitre());
 						}
-						
+
 						final ListView<String> listeViewDoc = new ListView(lstDoc);
-						
-						btn1.setOnAction(new EventHandler<ActionEvent>(){
+
+						btn1.setOnAction(new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent event) {
 								// TODO Auto-generated method stub
 								String titreChoisi = listeViewDoc.getSelectionModel().getSelectedItem();
-								
-								for (int i = 0; i < listeComplete.arListeDoc.size() && titreChoisi.compareTo(listeComplete.arListeDoc.get(i).getTitre())!= 0; i++) {
-									if(titreChoisi.compareTo(listeComplete.arListeDoc.get(i).getTitre())== 0) {
+
+								for (int i = 0; i < listeComplete.arListeDoc.size() && titreChoisi
+										.compareTo(listeComplete.arListeDoc.get(i).getTitre()) != 0; i++) {
+									if (titreChoisi.compareTo(listeComplete.arListeDoc.get(i).getTitre()) == 0) {
 										listeComplete.arListeDoc.get(i).setNomEmp(null);
 										listeComplete.arListeDoc.get(i).setPrenomEmp(null);
 										listeComplete.arListeDoc.get(i).setDateEmprunt(null);
 										listeComplete.arListeDoc.get(i).setNumTel(null);
 									}
-										
+
 								}
-								
-							}});
-						
-						root.getChildren().addAll(listeViewDoc,btn1);
-						
-					}});
 
-				
-				rightSide.getChildren().addAll(recherche, btnAjoutDoc, btnSuprDoc, btnGererUsers, btnPret, btnRetour);
+							}
+						});
 
-			}	
-			else// adherant
+						root.getChildren().addAll(listeViewDoc, btn1);
+
+					}
+				});
+
+				rightSide.getChildren().addAll(btnAjoutDoc, btnSuprDoc, btnGererUsers, btnPret, btnRetour);
+
+			} else// adherant
 			{
 				Button btnConsulter = new Button("Consulter son compte");
 				btnConsulter.setPrefSize(200, 40);
 				VBox.setMargin(btnConsulter, new Insets(10));
 				rightSide.getChildren().add(btnConsulter);
-				
+
 				EventHandler<MouseEvent> click = new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent e) {
 						// TODO Auto-generated method stub
 						int docEmp = 0;
 						int dette = 0;
-						
+
 						for (int i = 0; i < listeComplete.arListeDoc.size(); i++) {
-							if(Authentification.getStrNom() == listeComplete.arListeDoc.get(i).getNomEmp() && Authentification.getStrPrenom() == listeComplete.arListeDoc.get(i).getPrenomEmp())
-							{
+							if (Authentification.getStrNom() == listeComplete.arListeDoc.get(i).getNomEmp()
+									&& Authentification.getStrPrenom() == listeComplete.arListeDoc.get(i)
+											.getPrenomEmp()) {
 								double frais = 0;
 								int gap;
 								docEmp++;
 								Date live = new Date();
 								gap = live.compareTo(listeComplete.arListeDoc.get(i).getDateEmprunt());
-								if(listeComplete.arListeDoc.get(i) instanceof Livre && gap > 14)
-									frais = (gap - 14)*0.5;
-								if(listeComplete.arListeDoc.get(i) instanceof Periodique && gap > 3)
-									frais = (gap - 3)*0.5;
-								if(listeComplete.arListeDoc.get(i) instanceof DVD && gap > 7)
-									frais = (gap - 7)*0.5;
-								//RENDU ICI pas encore afficher
+								if (listeComplete.arListeDoc.get(i) instanceof Livre && gap > 14)
+									frais = (gap - 14) * 0.5;
+								if (listeComplete.arListeDoc.get(i) instanceof Periodique && gap > 3)
+									frais = (gap - 3) * 0.5;
+								if (listeComplete.arListeDoc.get(i) instanceof DVD && gap > 7)
+									frais = (gap - 7) * 0.5;
+								// RENDU ICI pas encore afficher
 							}
 						}
-						
+
 						Alert alert = new Alert(AlertType.INFORMATION);
 						alert.setTitle("Information");
 						alert.setHeaderText("Etat du compte");
-						alert.setContentText("Vous avez : " + docEmp + " Documents emprunte\n" + " et " + dette + "$ de dette");
+						alert.setContentText(
+								"Vous avez : " + docEmp + " Documents emprunte\n" + " et " + dette + "$ de dette");
 
 						alert.showAndWait();
 
-
 					}
 				};
-				
+
 				btnConsulter.setOnMouseClicked(click);
 			}
 
-			
 			primaryStage.show();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	EventHandler<MouseEvent> gestionAdherant = new EventHandler <MouseEvent>() {
-		
+
+	EventHandler<MouseEvent> gestionAdherant = new EventHandler<MouseEvent>() {
+
 		@Override
 		public void handle(MouseEvent event) {
 			// TODO Auto-generated method stub
 			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,750,525);
+			Scene scene = new Scene(root, 1000, 525);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			Stage primaryStage = new Stage();
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			primaryStage.setTitle("gestion des Adhérents");
 			primaryStage.setResizable(false);
-			
+
 			Button btnAjouterAdherent = new Button("Ajouter");
 			Button btnModifierAdherent = new Button("Modifier");
 			Button btnFermer = new Button("Fermer");
 			Button btnPayerSolde = new Button("Payer un solde");
 			Button btnSupprimerAdherent = new Button("Supprimer");
-			
+
+			btnFermer.setAlignment(Pos.CENTER_LEFT);
+			btnFermer.setMinWidth(100);
+			btnPayerSolde.setMinWidth(100);
+			btnModifierAdherent.setMinWidth(100);
+			btnAjouterAdherent.setMinWidth(100);
+			btnSupprimerAdherent.setMinWidth(100);
+			btnPayerSolde.setAlignment(Pos.CENTER_RIGHT);
+			btnModifierAdherent.setAlignment(Pos.CENTER_RIGHT);
+			btnAjouterAdherent.setAlignment(Pos.CENTER_RIGHT);
+			btnSupprimerAdherent.setAlignment(Pos.CENTER_RIGHT);
+
+			HBox hbAction = new HBox();
+			hbAction.getChildren().addAll(btnFermer, btnPayerSolde, btnAjouterAdherent, btnModifierAdherent,
+					btnSupprimerAdherent);
+			TitledPane tpAction = new TitledPane("Actions", hbAction);
+			root.getChildren().addAll(hbAction);
 			btnFermer.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -616,11 +754,7 @@ public class Mediatheque extends Application {// Remove extends application post
 				}
 
 			});
-			
+
 		}
 	};
-	public static void main(String[] args) {// remove main post testing
-		launch(args);
-	}
-
 }

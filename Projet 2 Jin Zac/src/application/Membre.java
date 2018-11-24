@@ -46,7 +46,12 @@ public class Membre implements Serializable{
 	}
 
 	public String getStrNumTel() {
-		return strNumTel;
+		String retour = null;
+		if(strNumTel == null)
+			retour = "rien";
+		else
+			retour = strNumTel;
+		return retour;
 	}
 
 	public String getStrIdPrep() {

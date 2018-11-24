@@ -8,7 +8,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.StringTokenizer;
+
+import javafx.util.converter.DateTimeStringConverter;
 
 public class ListeDocument {
 	private static ListeDocument instance;
@@ -16,8 +19,6 @@ public class ListeDocument {
 
 	private ListeDocument() throws IOException {
 		boolean fin = false;
-
-		
 
 		try {
 			FileInputStream fichier = new FileInputStream("document.ser");
@@ -27,19 +28,18 @@ public class ListeDocument {
 				while ((doc = (Document) is.readObject()) != null) {
 					arListeDoc.add(doc);
 				}
-			}catch (IOException e) {
+			} catch (IOException e) {
 			}
-			
-			System.out.println("3");
+
 		} catch (IOException e) {
 			// lecture des données si première fois que le programme est lancé
 			System.out.println("Première lecture du programme!");
-				// Lecture des dvd
-			lireFichier("DVD.txt","dvd");
-				// Lecture des livres
-			lireFichier("Livres.txt","livre");
-				// Lectures des périodiques
-			lireFichier("Periodiques.txt","periodique");
+			// Lecture des dvd
+			lireFichier("DVD.txt", "dvd");
+			// Lecture des livres
+			lireFichier("Livres.txt", "livre");
+			// Lectures des périodiques
+			lireFichier("Periodiques.txt", "periodique");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -60,21 +60,23 @@ public class ListeDocument {
 			br = new BufferedReader(fr);
 
 			String strLigne;
+			DateTimeStringConverter format = new DateTimeStringConverter(Locale.CANADA, "dd-MM-yyyy");
 			while ((strLigne = br.readLine()) != null) {
 				StringTokenizer stLigne = new StringTokenizer(strLigne, ",");
 				switch (strType) {
 				case "dvd":
-					arListeDoc.add(
-							new DVD(stLigne.nextToken().trim(), stLigne.nextToken().trim(), stLigne.nextToken().trim(),
-									Integer.parseInt(stLigne.nextToken().trim()), stLigne.nextToken().trim()));
+					arListeDoc.add(new DVD(stLigne.nextToken().trim(), stLigne.nextToken().trim(),
+							format.fromString(stLigne.nextToken().trim()), Integer.parseInt(stLigne.nextToken().trim()),
+							stLigne.nextToken().trim()));
 					break;
 				case "livre":
 					arListeDoc.add(new Livre(stLigne.nextToken().trim(), stLigne.nextToken().trim(),
-							stLigne.nextToken().trim(), stLigne.nextToken().trim()));
+							format.fromString(stLigne.nextToken().trim()), stLigne.nextToken().trim()));
 					break;
 				case "periodique":
 					arListeDoc.add(new Periodique(stLigne.nextToken().trim(), stLigne.nextToken().trim(),
-							stLigne.nextToken().trim(), null, stLigne.nextToken().trim(), stLigne.nextToken().trim()));
+							format.fromString(stLigne.nextToken().trim()), null, stLigne.nextToken().trim(),
+							stLigne.nextToken().trim()));
 					break;
 				}
 
@@ -124,5 +126,5 @@ public class ListeDocument {
 
 		}
 	}
-	
+
 }
